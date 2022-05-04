@@ -1,5 +1,5 @@
 # MundoDeWumpus
 
-## Arquivos Java sobre Resta Um
+## Arquivos Java sobre Mundo de Wumpus
 
-[Arquivos Java - Resta Um](src/pt/c40task/l05wumpus)
+[Arquivos Java - Mundo de Wumpus](src/pt/c40task/l05wumpus)
