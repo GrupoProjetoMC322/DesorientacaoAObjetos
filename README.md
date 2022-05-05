@@ -1,4 +1,4 @@
-# MundoDeWumpus
+# Lab05 - Mundo de Wumpus
 
 ## Arquivos Java sobre Mundo de Wumpus
 
