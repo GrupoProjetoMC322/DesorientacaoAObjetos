@@ -14,6 +14,8 @@ public class AppWumpus {
       Toolkit tk = Toolkit.start(arquivoCaverna, arquivoSaida, arquivoMovimentos);
       
       String cave[][] = tk.retrieveCave();
+      System.out.println(cave[0][2]);
+      MontadorCaverna montador = new MontadorCaverna();
       System.out.println("=== Caverna");
       for (int l = 0; l < cave.length; l++) {
          for (int c = 0; c < cave[l].length; c++)
