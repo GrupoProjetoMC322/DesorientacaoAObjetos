@@ -1,5 +1,7 @@
 package pt.c40task.l05wumpus;
 
+import java.util.Scanner;
+
 public class AppWumpus {
 
    public static void main(String[] args) {
@@ -13,17 +15,43 @@ public class AppWumpus {
                                   String arquivoMovimentos) {
       Toolkit tk = Toolkit.start(arquivoCaverna, arquivoSaida, arquivoMovimentos);
       
+      // Criacao da caverna
       String cave[][] = tk.retrieveCave();
+      MontadorCaverna montador = new MontadorCaverna();
+      Caverna caverna = montador.montarCaverna(cave);
+      System.out.println("=============");
+      System.out.println(caverna);
+      
+      // Controle do Jogo
+      if(arquivoMovimentos != null) {  // Modo Arquivo
+    	  String movements = tk.retrieveMovements();
+          System.out.println("=== Movimentos");
+          System.out.println(movements); 
+      } else {  // Modo Interativo
+    	  Scanner keyboard = new Scanner(System.in);
+    	  
+    	  while (true) {
+    		  String command = keyboard.nextLine();
+    		  
+    		  // TODO: implementar movimentação
+    		  
+    		  System.out.println(command);
+    		  if (command.equals("q")) {
+    			  System.out.println("Vazei!");
+    			  break;
+    		  }
+    	  }
+    	  
+    	  keyboard.close();
+      }
+      
+      /* Imprime o cave.csv
       System.out.println("=== Caverna");
       for (int l = 0; l < cave.length; l++) {
          for (int c = 0; c < cave[l].length; c++)
             System.out.print(cave[l][c] + ((c < cave[l].length-1) ? ", " : ""));
          System.out.println();
       }
-      
-      String movements = tk.retrieveMovements();
-      System.out.println("=== Movimentos");
-      System.out.println(movements);
       
       System.out.println("=== Caverna Intermediaria");
       char partialCave[][] = {
@@ -46,6 +74,7 @@ public class AppWumpus {
       score = -1210;
       status = 'n'; // 'w' para venceu; 'n' para perdeu; 'x' intermediárias
       tk.writeBoard(finalCave, score, status);
+      */
       
       tk.stop();
    }
