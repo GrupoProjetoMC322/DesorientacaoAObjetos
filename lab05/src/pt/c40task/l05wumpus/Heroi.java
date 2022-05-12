@@ -5,7 +5,7 @@ public class Heroi extends Componente {
     private boolean flechaEquipada;
     
 	public Heroi(Caverna caverna, int linha, int coluna, int prioridade) {
-		super(caverna, linha, coluna, prioridade);
+		super(caverna, linha, coluna, prioridade,"P");
 		this.numFlechas = 1;
 		this.flechaEquipada = false;
 	}
@@ -27,15 +27,27 @@ public class Heroi extends Componente {
 	}
 
 	/* TODO
-    // mover()
+    // mover()   remover e adicionar em outra sala
      * caverna[linha-1][posicao-1].getComponentes();
     // equiparFlecha()
     // atirarFlecha()
     // capturarOuro()
     */
 	
+	public void mover(String comando){
+		this.caverna.salas[this.getLinha()][this.getColuna()].removeComponente(this);
+		if(comando.equals("d")) {
+			if(this.getLinha() == 4) {
+				
+			} else {
+				this.setLinha(this.getLinha()+1);
+				this.incluiNaCaverna();
+			}
+		}
+	}
+	
 	public String toString() {
-		return "P";
+		return this.getTipo();
 	}
 
 }

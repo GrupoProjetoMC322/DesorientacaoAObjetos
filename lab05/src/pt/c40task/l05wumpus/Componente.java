@@ -1,16 +1,17 @@
 package pt.c40task.l05wumpus;
 
 public class Componente {
-    private Caverna caverna;
+    protected Caverna caverna;
     private int linha, coluna;
     private int prioridade;
+    private String tipo;
     
-	public Componente(Caverna caverna, int linha, int coluna, int prioridade) {
+	public Componente(Caverna caverna, int linha, int coluna, int prioridade,String tipo) {
 		this.caverna = caverna;
-		incluiNaCaverna();
 		this.linha = linha;
 		this.coluna = coluna;
 		this.prioridade = prioridade;
+		this.tipo = tipo;
 	}
 
 	public int getLinha() {
@@ -33,7 +34,11 @@ public class Componente {
 		return prioridade;
 	}
 	
-    protected void incluiNaCaverna() {
+	public String getTipo() {
+		return tipo;
+	}
+	
+    public void incluiNaCaverna() {
     	caverna.adicionaComponente(this);
     }
     
