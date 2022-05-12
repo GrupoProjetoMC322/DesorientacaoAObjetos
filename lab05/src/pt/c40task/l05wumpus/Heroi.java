@@ -5,7 +5,7 @@ public class Heroi extends Componente {
     private boolean flechaEquipada;
     
 	public Heroi(Caverna caverna, int linha, int coluna, int prioridade) {
-		super(caverna, linha, coluna, prioridade);
+		super(caverna, linha, coluna, prioridade,"P");
 		this.numFlechas = 1;
 		this.flechaEquipada = false;
 	}
@@ -35,7 +35,7 @@ public class Heroi extends Componente {
     */
 	
 	public String toString() {
-		return "P";
+		return this.getTipo();
 	}
 
 }
