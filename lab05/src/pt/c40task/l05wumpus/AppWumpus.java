@@ -18,18 +18,27 @@ public class AppWumpus {
       String cave[][] = tk.retrieveCave();
       MontadorCaverna montador = new MontadorCaverna();
       Caverna caverna = montador.montarCaverna(cave);
+      System.out.println("=============");
       System.out.println(caverna);
       
+      /* Imprime o cave.csv
       System.out.println("=== Caverna");
       for (int l = 0; l < cave.length; l++) {
          for (int c = 0; c < cave[l].length; c++)
             System.out.print(cave[l][c] + ((c < cave[l].length-1) ? ", " : ""));
          System.out.println();
-      }
+      } */
       
-      String movements = tk.retrieveMovements();
-      System.out.println("=== Movimentos");
-      System.out.println(movements);
+      //Teste remoção
+      caverna.salas[0][3].removeComponente(caverna.salas[0][3].getComponentes()[0]);
+      System.out.println("=============");
+      System.out.println(caverna);
+      
+      if(arquivoMovimentos != null) { // Modo Arquivo
+    	  String movements = tk.retrieveMovements();
+          System.out.println("=== Movimentos");
+          System.out.println(movements); 
+      }
       
       System.out.println("=== Caverna Intermediaria");
       char partialCave[][] = {

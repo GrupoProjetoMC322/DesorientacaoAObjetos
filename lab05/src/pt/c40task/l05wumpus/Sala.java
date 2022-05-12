@@ -11,7 +11,7 @@ public class Sala {
 		this.num_componentes = 0;
 	}
     
-    public void adicionaComponente(Componente componente) {
+    public int adicionaComponente(Componente componente) {
     	/* TODO:
     	 * verificação se não haverá ouro, Wumpus e/ou buraco na mesma sala
     	 * verificar se o componente já existe (ex.: duas brisas)
@@ -19,16 +19,49 @@ public class Sala {
     	 * Adicionar tipos a classe componente (Util para verificacao e remocao)
     	 * 
     	 */
-    	
+    	int status = 0;
+    	for(int i = 0;i<this.num_componentes;i++) {
+    		// Buraco com Ouro ou Wumpus
+    		if(componente.getTipo().equals("B") && (componentes[i].getTipo().equals("O") || componentes[i].getTipo().equals("W"))) {
+    			status = 1;
+    		} // Ouro com Buraco ou Wumpus
+    		else if(componente.getTipo().equals("O") && (componentes[i].getTipo().equals("B") || componentes[i].getTipo().equals("W"))) {
+    			status = 2;
+    		} // Wumpus com Buraco ou Ouro
+    		else if(componente.getTipo().equals("W") && (componentes[i].getTipo().equals("B") || componentes[i].getTipo().equals("O"))) {
+    			status = 3;
+    		} // Componente Repetido 
+    		else if(componente.getTipo().equals(componentes[i].getTipo())) {
+    			status = 4;
+    		}
+    	}
     	if(componente.getTipo() == "P") {
     		this.setVisitado(true);
     	}
-    	componentes[this.num_componentes] = componente;
-    	this.num_componentes++;
+    	
+    	if(status == 0) {
+    		componentes[this.num_componentes] = componente;
+        	this.num_componentes++;
+    	}
+    	
+    	return status;
     }
     
     public void removeComponente(Componente componente) {
-    	
+    	for(int i = 0;i<4;i++){
+			if(componentes[i] == componente){
+				componentes[i] = null;
+			}
+		}
+		// REORGANIZA
+		int next = 1;
+		for(int j = 0;j<3;j++){
+			if(componentes[j] == null && componentes[next] != null){
+				componentes[j] = componentes[next];
+				componentes[next] = null;
+			}
+		}
+		this.num_componentes--;
     }
     
     public Componente[] getComponentes() {

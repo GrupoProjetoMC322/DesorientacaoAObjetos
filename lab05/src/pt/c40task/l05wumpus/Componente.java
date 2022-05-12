@@ -1,7 +1,7 @@
 package pt.c40task.l05wumpus;
 
 public class Componente {
-    private Caverna caverna;
+    protected Caverna caverna;
     private int linha, coluna;
     private int prioridade;
     private String tipo;
