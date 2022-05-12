@@ -1,7 +1,7 @@
 package pt.c40task.l05wumpus;
 
 public class Caverna {
-    public Sala[][] salas;
+    private Sala[][] salas;
     
     public Caverna(Sala[][] salas) {
 		this.salas = salas;
@@ -21,14 +21,18 @@ public class Caverna {
 			System.out.println("Componente Repetido");
 		}
 	}
+	
+	public Sala getSala(int linha, int coluna) {
+		return salas[linha][coluna];
+	}
 
 	public String toString() {
 		String cave = "";
-		for(int i = 0;i<4;i++) {
-			for(int j = 0;j<4;j++) {
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
 				cave += salas[i][j].toString();
 			}
-			if(i!= 3){
+			if(i != 3){
 				cave += "\n";
 			}
 			

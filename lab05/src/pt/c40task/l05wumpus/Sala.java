@@ -2,25 +2,18 @@ package pt.c40task.l05wumpus;
 
 public class Sala {
     private Componente[] componentes;
-    private int num_componentes;
+    private int numComponentes;
     private boolean visitado;
     
     public Sala() {
 		this.componentes = new Componente[4];
 		this.visitado = false;
-		this.num_componentes = 0;
+		this.numComponentes = 0;
 	}
     
     public int adicionaComponente(Componente componente) {
-    	/* TODO:
-    	 * verificação se não haverá ouro, Wumpus e/ou buraco na mesma sala
-    	 * verificar se o componente já existe (ex.: duas brisas)
-    	 * 
-    	 * Adicionar tipos a classe componente (Util para verificacao e remocao)
-    	 * 
-    	 */
     	int status = 0;
-    	for(int i = 0;i<this.num_componentes;i++) {
+    	for(int i = 0;i<this.numComponentes;i++) {
     		// Buraco com Ouro ou Wumpus
     		if(componente.getTipo().equals("B") && (componentes[i].getTipo().equals("O") || componentes[i].getTipo().equals("W"))) {
     			status = 1;
@@ -30,7 +23,7 @@ public class Sala {
     		} // Wumpus com Buraco ou Ouro
     		else if(componente.getTipo().equals("W") && (componentes[i].getTipo().equals("B") || componentes[i].getTipo().equals("O"))) {
     			status = 3;
-    		} // Componente Repetido 
+    		} // Componente Repetido
     		else if(componente.getTipo().equals(componentes[i].getTipo())) {
     			status = 4;
     		}
@@ -40,8 +33,8 @@ public class Sala {
     	}
     	
     	if(status == 0) {
-    		componentes[this.num_componentes] = componente;
-        	this.num_componentes++;
+    		componentes[this.numComponentes] = componente;
+        	this.numComponentes++;
     	}
     	
     	return status;
@@ -61,7 +54,7 @@ public class Sala {
 				componentes[next] = null;
 			}
 		}
-		this.num_componentes--;
+		this.numComponentes--;
     }
     
     public Componente[] getComponentes() {

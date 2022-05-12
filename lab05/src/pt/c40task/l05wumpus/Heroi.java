@@ -3,11 +3,13 @@ package pt.c40task.l05wumpus;
 public class Heroi extends Componente {
     private int numFlechas;
     private boolean flechaEquipada;
+    private boolean vivo;
     
-	public Heroi(Caverna caverna, int linha, int coluna, int prioridade) {
-		super(caverna, linha, coluna, prioridade,"P");
+	public Heroi(Caverna caverna, int linha, int coluna) {
+		super(caverna, linha, coluna, 3, "P");
 		this.numFlechas = 1;
 		this.flechaEquipada = false;
+		this.vivo = true;
 	}
 
 	public int getNumFlechas() {
@@ -26,28 +28,50 @@ public class Heroi extends Componente {
 		this.flechaEquipada = flechaEquipada;
 	}
 
+	public boolean isVivo() {
+		return vivo;
+	}
+
+	public void setVivo(boolean vivo) {
+		if (this.vivo)
+			this.vivo = vivo;
+	}
+	
 	/* TODO
-    // mover()   remover e adicionar em outra sala
-     * caverna[linha-1][posicao-1].getComponentes();
-    // equiparFlecha()
-    // atirarFlecha()
     // capturarOuro()
     */
 	
-	public void mover(String comando){
-		this.caverna.salas[this.getLinha()][this.getColuna()].removeComponente(this);
-		if(comando.equals("d")) {
-			if(this.getLinha() == 4) {
-				
-			} else {
-				this.setLinha(this.getLinha()+1);
-				this.incluiNaCaverna();
-			}
-		}
+	private void atirarFlecha() {
+		
 	}
 	
-	public String toString() {
-		return this.getTipo();
+	public void mover(String comando){
+		// Remove o herói da sala onde ele estava antes de se mover
+		Sala salaAtual = caverna.getSala(getLinha(), getColuna());
+		salaAtual.removeComponente(this);
+		
+		// Atualiza a posição do herói
+		if (comando.equals("w") && getLinha() > 0)
+			setLinha(getLinha() + 1);
+		else if (comando.equals("s") && getLinha() < 3)
+			setLinha(getLinha() - 1);
+		else if (comando.equals("a") && getColuna() > 0)
+			setColuna(getColuna() - 1);
+		else if (comando.equals("d") && getColuna() < 3)
+			setColuna(getColuna() + 1);
+		caverna.adicionaComponente(this);
+		
+		salaAtual = caverna.getSala(getLinha(), getColuna());
+		Componente comp[] = salaAtual.getComponentes();
+		for (int i = 0; i < 4 && comp[i] != null; i++) {
+			if (comp[i].getTipo().equals("B"))	// cai no buraco
+				setVivo(false);
+			else if (comp[i].getTipo().equals("W"))  // encontra o Wumpus
+				if (getFlechaEquipada())
+					atirarFlecha();
+				else
+					setVivo(false);
+		}
 	}
 
 }

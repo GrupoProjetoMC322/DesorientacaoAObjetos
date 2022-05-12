@@ -6,7 +6,7 @@ public class Componente {
     private int prioridade;
     private String tipo;
     
-	public Componente(Caverna caverna, int linha, int coluna, int prioridade,String tipo) {
+	public Componente(Caverna caverna, int linha, int coluna, int prioridade, String tipo) {
 		this.caverna = caverna;
 		this.linha = linha;
 		this.coluna = coluna;
@@ -43,6 +43,6 @@ public class Componente {
     }
     
     public String toString() {
-    	return "";
+    	return this.getTipo();
     }
 }
