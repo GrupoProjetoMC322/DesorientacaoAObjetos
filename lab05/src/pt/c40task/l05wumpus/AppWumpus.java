@@ -18,63 +18,56 @@ public class AppWumpus {
       // Criacao da caverna
       String cave[][] = tk.retrieveCave();
       MontadorCaverna montador = new MontadorCaverna();
-      Caverna caverna = montador.montarCaverna(cave);
-      System.out.println("=============");
-      System.out.println(caverna);
+      ControleJogo controle = new ControleJogo();
+      Caverna caverna = montador.montarCaverna(cave,controle);
       
       // Controle do Jogo
-      if(arquivoMovimentos != null) {  // Modo Arquivo
-    	  String movements = tk.retrieveMovements();
-          System.out.println("=== Movimentos");
-          System.out.println(movements); 
-      } else {  // Modo Interativo
-    	  Scanner keyboard = new Scanner(System.in);
-    	  
-    	  while (true) {
-    		  String command = keyboard.nextLine();
-    		  
-    		  // TODO: implementar movimentação
-    		  
-    		  System.out.println(command);
-    		  if (command.equals("q")) {
-    			  System.out.println("Vazei!");
-    			  break;
-    		  }
-    	  }
-    	  
-    	  keyboard.close();
-      }
-      
-      /* Imprime o cave.csv
-      System.out.println("=== Caverna");
-      for (int l = 0; l < cave.length; l++) {
-         for (int c = 0; c < cave[l].length; c++)
-            System.out.print(cave[l][c] + ((c < cave[l].length-1) ? ", " : ""));
-         System.out.println();
-      }
-      
-      System.out.println("=== Caverna Intermediaria");
-      char partialCave[][] = {
-         {'#', '#', 'b', '-'},
-         {'#', 'b', '-', '-'},
-         {'b', '-', '-', '-'},
-         {'p', '-', '-', '-'}
-      };
-      int score = -120;
-      char status = 'x'; // 'w' para venceu; 'n' para perdeu; 'x' intermediárias
-      tk.writeBoard(partialCave, score, status);
+      if (arquivoMovimentos != null) {  // Modo Arquivo
+    	   String movements = tk.retrieveMovements();
+         String[] movementsArray = movements.split("");
 
-      System.out.println("=== Última Caverna");
-      char finalCave[][] = {
-         {'#', '#', 'b', '-'},
-         {'#', 'b', '#', 'f'},
-         {'b', '-', '-', 'w'},
-         {'#', '-', '-', '-'}
-      };
-      score = -1210;
-      status = 'n'; // 'w' para venceu; 'n' para perdeu; 'x' intermediárias
-      tk.writeBoard(finalCave, score, status);
-      */
+         tk.writeBoard(caverna.cavernaChar(), controle.getPontuacao(), controle.getStatus());  // guarda a caverna inicial
+
+         for (int i = 0; i < movementsArray.length; i++) {
+            if (movementsArray[i].equals("q"))
+               break;
+            controle.executarAcao(movementsArray[i]);
+            tk.writeBoard(caverna.cavernaChar(), controle.getPontuacao(), controle.getStatus());
+         }
+      } else {  // Modo Interativo
+    	   Scanner keyboard = new Scanner(System.in);
+
+         System.out.print("Entre o nome do jogador: ");
+         String nome = keyboard.nextLine();
+         controle.setJogador(nome);
+
+         System.out.println("=====");
+         System.out.println(caverna);
+         System.out.println(String.format("Player: %s\nScore: %d", controle.getJogador(), controle.getPontuacao()));
+
+    	   while (controle.getStatus() == 'x') {
+            System.out.print("Digite o seu comando: ");
+    		   String command = keyboard.nextLine();
+
+            if (command.equals("q")) {
+               System.out.println("Volte sempre!");
+               break;
+            }
+
+            controle.executarAcao(command);
+            System.out.println("=====");
+            System.out.println(caverna);
+            System.out.println(String.format("Player: %s\nScore: %d", controle.getJogador(), controle.getPontuacao()));
+
+         }
+         if (controle.getStatus() == 'w') 
+            System.out.println("Voce ganhou =D !!!");
+         else 
+            System.out.println("Voce perdeu =( ...");
+         
+         
+         keyboard.close();
+      }
       
       tk.stop();
    }
