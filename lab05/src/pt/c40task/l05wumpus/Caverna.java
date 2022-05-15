@@ -13,17 +13,35 @@ public class Caverna {
 		switch (erro){
 		case 1:
 			System.out.println("Buraco com Ouro ou Wumpus");
+			break;
 		case 2:
 			System.out.println("Ouro com Buraco ou Wumpus");
+			break;
 		case 3:
 			System.out.println("Wumpus com Buraco ou Ouro");
+			break;
 		case 4:
 			System.out.println("Componente Repetido");
+			break;
 		}
 	}
+
+	public void removeComponente(Componente comp) {
+		salas[comp.getLinha()][comp.getColuna()].removeComponente(comp);
+	}
 	
-	public Sala getSala(int linha, int coluna) {
-		return salas[linha][coluna];
+	public Componente[] getComponentes(int linha, int coluna) {
+		return salas[linha][coluna].getComponentes();
+	}
+
+	public char[][] cavernaChar(){
+		char[][] cave = new char[4][4];
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				cave[i][j] = (salas[i][j].toString()).charAt(0);
+			}
+		}
+		return cave;
 	}
 
 	public String toString() {
