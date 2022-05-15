@@ -5,6 +5,7 @@ public class Componente {
     private int linha, coluna;
     private int prioridade;
     private String tipo;
+	private Componente[] componentesSecundarios;
     
 	public Componente(Caverna caverna, int linha, int coluna, int prioridade, String tipo) {
 		this.caverna = caverna;
@@ -12,6 +13,7 @@ public class Componente {
 		this.coluna = coluna;
 		this.prioridade = prioridade;
 		this.tipo = tipo;
+		this.componentesSecundarios = null;
 	}
 
 	public int getLinha() {
@@ -41,6 +43,14 @@ public class Componente {
     public void incluiNaCaverna() {
     	caverna.adicionaComponente(this);
     }
+
+	public Componente[] getComponentesSecundarios() {
+		return componentesSecundarios;
+	}
+
+	public void setComponentesSecundarios(Componente[] componentesSecundarios) {
+		this.componentesSecundarios = componentesSecundarios;
+	}
     
     public String toString() {
     	return this.getTipo();
