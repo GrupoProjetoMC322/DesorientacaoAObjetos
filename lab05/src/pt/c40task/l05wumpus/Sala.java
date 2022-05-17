@@ -53,6 +53,7 @@ public class Sala {
 				componentes[j] = componentes[next];
 				componentes[next] = null;
 			}
+			next++;
 		}
 		this.numComponentes--;
     }
