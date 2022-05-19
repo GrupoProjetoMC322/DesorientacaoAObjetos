@@ -42,7 +42,7 @@ public class MontadorCaverna {
 						numWumpus++;
 					}
 				} else if(componente.equals("B")) {
-					if(numBuracos > 3){
+					if(numBuracos > 2){
 						errorMessage = "Erro ao montar caverna: Mais de 3 buracos";
 					} else {
 						Componente buraco = new Buraco(this.caverna, linha, coluna);
