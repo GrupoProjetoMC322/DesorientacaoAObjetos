@@ -32,7 +32,7 @@ public class AppWumpus {
 
             for (int i = 0; i < movementsArray.length && !movementsArray[i].equals("q") && controle.getStatus() == 'P'; i++) {
                resposta = controle.executarAcao(movementsArray[i]);
-               if (resposta.equals("Erro: Jogada invalida!") || resposta.equals("Erro: Nao ha ouro nessa sala!"))
+               if (resposta.contains("Erro"))
                   tk.writeError(resposta);
                else if (!resposta.equals("O heroi preparou a flecha."))
                   tk.writeBoard(caverna.cavernaChar(), controle.getPontuacao(), controle.getStatus());
@@ -53,7 +53,9 @@ public class AppWumpus {
                System.out.print("Digite o seu comando: ");
                String command = keyboard.nextLine();
    
-               if (command.equals("q")) {
+               if (command.equals("q")) {  // encerra a execução
+            	  System.out.println(String.format("=====\n%s\nPlayer: %s\nScore: %d",
+                           caverna, controle.getJogador(), controle.getPontuacao()));
                   System.out.println("Volte sempre!");
                   break;
                }
@@ -65,7 +67,7 @@ public class AppWumpus {
             }
             if (controle.getStatus() == 'W') 
                System.out.println("Voce ganhou =D !!!");
-            else 
+            else if (controle.getStatus() == 'L')
                System.out.println("Voce perdeu =( ...");
             
             keyboard.close();
