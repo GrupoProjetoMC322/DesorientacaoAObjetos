@@ -11,18 +11,22 @@ public class Sala {
 		this.numComponentes = 0;
 	}
     
-    public int adicionaComponente(Componente componente) {
+    public String adicionaComponente(Componente componente) {
     	int status = 0;
+		String erro = "";
     	for(int i = 0;i<this.numComponentes;i++) {
     		// Buraco com Ouro ou Wumpus
     		if(componente.getTipo().equals("B") && (componentes[i].getTipo().equals("O") || componentes[i].getTipo().equals("W"))) {
     			status = 1;
+				erro = "Erro ao montar caverna: Buraco com Ouro ou Wumpus na mesma sala\n";
     		} // Ouro com Buraco ou Wumpus
     		else if(componente.getTipo().equals("O") && (componentes[i].getTipo().equals("B") || componentes[i].getTipo().equals("W"))) {
     			status = 2;
+				erro = "Erro ao montar caverna: Ouro com Buraco ou Wumpus na mesma sala\n";
     		} // Wumpus com Buraco ou Ouro
     		else if(componente.getTipo().equals("W") && (componentes[i].getTipo().equals("B") || componentes[i].getTipo().equals("O"))) {
     			status = 3;
+				erro = "Erro ao montar caverna: Wumpus com Buraco ou Ouro na mesma sala\n";
     		} // Componente Repetido
     		else if(componente.getTipo().equals(componentes[i].getTipo())) {
     			status = 4;
@@ -37,7 +41,7 @@ public class Sala {
         	this.numComponentes++;
     	}
     	
-    	return status;
+    	return erro;
     }
     
     public void removeComponente(Componente componente) {

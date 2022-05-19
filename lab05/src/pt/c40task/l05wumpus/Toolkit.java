@@ -90,6 +90,12 @@ public class Toolkit {
          erro.printStackTrace();
       }
    }
+
+   public void writeError(String errorMessage) {
+      if (!firstBoard)
+            outputStr.println("=====");
+      outputStr.println(errorMessage);
+   }
    
    public void stop() {
       try {

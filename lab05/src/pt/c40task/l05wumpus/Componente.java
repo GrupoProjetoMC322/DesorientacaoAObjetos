@@ -1,6 +1,6 @@
 package pt.c40task.l05wumpus;
 
-public class Componente {
+public abstract class Componente {
     protected Caverna caverna;
     private int linha, coluna;
     private int prioridade;
@@ -40,8 +40,8 @@ public class Componente {
 		return tipo;
 	}
 	
-    public void incluiNaCaverna() {
-    	caverna.adicionaComponente(this);
+    public String incluiNaCaverna() {
+    	return caverna.adicionaComponente(this);
     }
 
 	public Componente[] getComponentesSecundarios() {

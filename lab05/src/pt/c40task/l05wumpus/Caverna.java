@@ -7,23 +7,10 @@ public class Caverna {
 		this.salas = salas;
 	}
 	
-	public void adicionaComponente(Componente novo) {
-		int erro;
+	public String adicionaComponente(Componente novo) {
+		String erro = "";
 		erro = salas[novo.getLinha()][novo.getColuna()].adicionaComponente(novo);
-		switch (erro){
-		case 1:
-			System.out.println("Buraco com Ouro ou Wumpus");
-			break;
-		case 2:
-			System.out.println("Ouro com Buraco ou Wumpus");
-			break;
-		case 3:
-			System.out.println("Wumpus com Buraco ou Ouro");
-			break;
-		case 4:
-			System.out.println("Componente Repetido");
-			break;
-		}
+		return erro;
 	}
 
 	public void removeComponente(Componente comp) {

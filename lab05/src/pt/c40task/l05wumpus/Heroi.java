@@ -1,5 +1,8 @@
 package pt.c40task.l05wumpus;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Heroi extends Componente {
     private int numFlechas;
     private boolean flechaEquipada;
@@ -26,9 +29,13 @@ public class Heroi extends Componente {
 		return flechaEquipada;
 	}
 
-	public void setFlechaEquipada(boolean flechaEquipada) {
-		if (getNumFlechas() > 0)
+	public boolean setFlechaEquipada(boolean flechaEquipada) {
+		boolean sucesso = false;
+		if (getNumFlechas() > 0) {
 			this.flechaEquipada = flechaEquipada;
+			sucesso = true;
+		}
+		return sucesso;
 	}
 
 	public boolean isVivo() {
@@ -49,13 +56,16 @@ public class Heroi extends Componente {
 			this.ouroCapturado = ouroCapturado;
 	}
 	
-	public void capturarOuro() {
+	public boolean capturarOuro() {
+		boolean sucesso = false;
 		Componente[] comp = caverna.getComponentes(getLinha(), getColuna());
 		for (int i = 0; i < 4 && comp[i] != null; i++)
 			if (comp[i].getTipo().equals("O")) {  // verifica se o ouro está naquela sala
 				caverna.removeComponente(comp[i]);
 				ouroCapturado = true;
+				sucesso = true;
 			}
+		return sucesso;
 	}
 	
 	private int atiraNoWumpus(Componente wumpus) {
@@ -75,72 +85,82 @@ public class Heroi extends Componente {
 			status = 2;
 			setVivo(false);
 		}
+
 		return status;
 	}
 	
-	public int mover(String comando){
-		int status = -1;
+	public ArrayList<Integer> mover(String comando){
+		ArrayList<Integer> resposta = new ArrayList<>();
 		/* STATUS:
-		 * 0 - se a movimentação ocorreu com sucesso e o herói não atirou a flecha
-		 * 1 - se a movimentação ocorreu com sucesso e o herói atirou a flecha, sem matar o Wumpus
-		 * 2 - se o herói morreu sem atirar a flecha
-		 * 3 - se o herói morreu e atirou a flecha ou herói mata o Wumpus sem contar o gasto de flecha 
-		 * 4 - se a movimentação ocorreu com sucesso e o herói matou o Wumpus
-		 * 5 - se o herói sai da caverna sem atirar a flecha
-		 * 6 - se o herói sai da caverna atirando a flecha
+		 * 0 - o heroi apenas se movimenta
+		 * 1 - o heroi atira a flecha
+		 * 2 - o heroi morre, seja caindo em um buraco ou morto pelo Wumpus
+		 * 3 - o heroi mata o Wumpus
+		 * 4 - o heroi encontra o ouro
+		 * 5 - o heroi captura o ouro
+		 * 6 - o heroi prepara a flecha
+		 * 7 - o heroi entra em uma sala onde há brisa
+		 * 8 - o heroi entra em uma sala onde há fedor
+		 * 9 - o heroi sai da caverna (ganha o jogo)
 		 */
 
 		 // Remove o herói da sala onde ele estava antes de se mover
 		caverna.removeComponente(this);
 		
 		// Atualiza a posição do herói
-		if (comando.equals("s") && getLinha() < 3){
+		if (comando.equals("s")){
 			setLinha(getLinha() + 1);
-			status = 0;
+			resposta.add(0);
 		}
-		else if (comando.equals("w") && getLinha() > 0){
+		else if (comando.equals("w")){
 			setLinha(getLinha() - 1);
-			status = 0;
+			resposta.add(0);
 		}
-		else if (comando.equals("a") && getColuna() > 0){
+		else if (comando.equals("a")){
 			setColuna(getColuna() - 1);
-			status = 0;
+			resposta.add(0);
 		}
-		else if (comando.equals("d") && getColuna() < 3){
+		else if (comando.equals("d")){
 			setColuna(getColuna() + 1);
-			status = 0;
+			resposta.add(0);
 		}
 		caverna.adicionaComponente(this);
-		
-		// verifica se o herói cai em um buraco ou encontra o Wumpus
+
+		// verifica quais componentes o herói encontra na sala
 		Componente comp[] = caverna.getComponentes(getLinha(), getColuna());
 		for (int i = 0; i < 4 && comp[i] != null; i++) {
-			if (comp[i].getTipo().equals("B")) {	// cai no buraco
+			if (comp[i].getTipo().equals("b"))
+				resposta.add(7);
+			else if (comp[i].getTipo().equals("f"))
+				resposta.add(8);
+			else if (comp[i].getTipo().equals("O"))
+				resposta.add(4);
+			else if (comp[i].getTipo().equals("B")) {
 				setVivo(false);
-				status = 2;
+				resposta.add(2);
 			}
-			else if (comp[i].getTipo().equals("W"))  // encontra o Wumpus
+			else if (comp[i].getTipo().equals("W"))
 				if (getFlechaEquipada())
-					status = atiraNoWumpus(comp[i]);
+					resposta.add(atiraNoWumpus(comp[i]));
 				else {
-					status = 2;
+					resposta.add(2);
 					setVivo(false);
 				}
 		}
 
 		if (getLinha() == 0 && getColuna() == 0 && ouroCapturado == true) {
 			// verifica se o herói saiu da caverna com sucesso
-			status = 5;
+			resposta.add(9);
 		}
 
-		if (getFlechaEquipada()) {
-			// contabiliza o gasto da flecha
-			status++;
+		if (getFlechaEquipada()) {  // contabiliza o gasto da flecha
+			resposta.add(1);
 			setFlechaEquipada(false);
 			setNumFlechas(0);
 		}
 
-		return status;
+		Collections.sort(resposta);	 // ordena as resposta por código
+		return resposta;
 	}
 
 }

@@ -1,16 +1,30 @@
 package pt.c40task.l05wumpus;
 
+import java.util.ArrayList;
+
 public class ControleJogo {
     private Heroi heroi;
 	private String jogador;
     private int pontuacao;
 	private char status;
+	final Resposta[] respostas =  {
+		new Resposta(-15, "O heroi se moveu"),
+		new Resposta(-100, "atirou a flecha"),
+		new Resposta(-1000, "morreu"),
+		new Resposta(500, "matou o Wumpus"),
+		new Resposta(0, "encontrou o ouro"),
+		new Resposta(0, "O heroi capturou o ouro."),
+		new Resposta(0, "O heroi preparou a flecha."),
+		new Resposta(0, "sentiu uma leve brisa"),
+		new Resposta(0, "sentiu fedor"),
+		new Resposta(1000, "saiu vitorioso da caverna")
+	};
     
 	public ControleJogo() {
 		this.jogador = null;
 		this.heroi = null;
 		this.pontuacao = 0;
-		this.status = 'x';
+		this.status = 'P';
 	}
 
 	public int getPontuacao() {
@@ -41,43 +55,49 @@ public class ControleJogo {
 		this.status = status;
 	}
 
-	public void executarAcao(String comando) {
-		if (comando.equals("w") || comando.equals("s") || comando.equals("a") || comando.equals("d")) {
-			switch (heroi.mover(comando)) {
-				case 0:
-					pontuacao -= 15;
-					break;
-				case 1:
-					pontuacao -= 115;
-					break;
-				case 2:	 // se o herói morreu sem atirar a flecha
-					pontuacao -= 1015;
-					setStatus('n');
-					break;
-				case 3:
-					pontuacao -= 1115;
-					setStatus('n');
-					break;
-				case 4:
-					pontuacao += 385;
-					break;
-				case 5:
-					pontuacao += 985;
-					setStatus('w');
-					break;
-				case 6:
-					pontuacao += 885;
-					setStatus('w');
-					break;
+	public String executarAcao(String comando) {
+		String mensagem = "";
+		ArrayList<Integer> retorno = new ArrayList<>(); 
+		
+		if ((comando.equals("w") && heroi.getLinha() > 0)|| (comando.equals("a") && heroi.getColuna() > 0) 
+			|| (comando.equals("s") && heroi.getLinha() < 3) || (comando.equals("d") && heroi.getColuna() < 3)) {
+			retorno = heroi.mover(comando);
+			for (int i = 0; i < retorno.size(); i++) {
+				int ret = retorno.get(i);
+				pontuacao += respostas[ret].getScore();
+				mensagem += respostas[ret].getMensagem();
+				if (i < retorno.size() - 2){
+					mensagem += ", ";
+				} else if(i == retorno.size() - 2){
+					mensagem += " e ";
+				}else {
+					mensagem += ".";
+				}
+
+				if (ret == 2)
+					this.status = 'L';
+				else if (ret == 9)
+					this.status = 'W';
 			}
 		}
-		else if (comando.equals("k"))
-			heroi.setFlechaEquipada(true);
+		else if (comando.equals("k")) {
+			boolean sucesso = heroi.setFlechaEquipada(true);
+			if (sucesso)
+				mensagem = respostas[6].getMensagem();
+			else
+				mensagem = "Erro: Nao ha flechas restantes!";
+		}
 		else if (comando.equals("c")) {
-			heroi.capturarOuro();
+			boolean sucesso = heroi.capturarOuro();
+			if (sucesso)
+				mensagem = respostas[5].getMensagem();
+			else
+				mensagem = "Erro: Nao ha ouro nessa sala!";
 		}
 		else
-			System.out.println("Comando inválido!");
+			mensagem = "Erro: Jogada invalida!";
+
+		return mensagem; 
 	}
 
 }
