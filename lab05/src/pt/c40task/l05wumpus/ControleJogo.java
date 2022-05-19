@@ -7,7 +7,7 @@ public class ControleJogo {
 	private String jogador;
     private int pontuacao;
 	private char status;
-	final Resposta[] respostas =  {
+	private final Resposta[] respostas =  {
 		new Resposta(-15, "O heroi se moveu"),
 		new Resposta(-100, "atirou a flecha"),
 		new Resposta(-1000, "morreu"),
