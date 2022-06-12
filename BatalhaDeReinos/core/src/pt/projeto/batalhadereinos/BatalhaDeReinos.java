@@ -4,18 +4,20 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import pt.projeto.batalhadereinos.controller.GameController;
+import pt.projeto.batalhadereinos.controller.GameScreenController;
 
 public class BatalhaDeReinos extends Game {
-	public GameController game;
+	public GameScreenController gameScreenController;
 	public SpriteBatch batch;
 	public BitmapFont font;
 
 	public void create() {
-		game = new GameController();
+		gameScreenController = new GameScreenController(this);
 		batch = new SpriteBatch();
+		
 		font = new BitmapFont(); // use libGDX's default Arial font
-		game.start(this);
+
+		gameScreenController.start();
 	}
 
 	public void render() {

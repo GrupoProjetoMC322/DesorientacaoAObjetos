@@ -13,26 +13,25 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
-import pt.projeto.batalhadereinos.controller.GameController;
+import pt.projeto.batalhadereinos.controller.GameScreenController;
 
 public class MainMenuScreen implements Screen{
     final BatalhaDeReinos game;
-
+	private GameScreenController gameScreenController;
 	OrthographicCamera camera;
 
-	public MainMenuScreen(final BatalhaDeReinos game) {
+	public MainMenuScreen(final BatalhaDeReinos game, GameScreenController gameScreenController) {
 		this.game = game;
 
+		this.gameScreenController = gameScreenController;
+
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, 1440, 1024);
 	}
 
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
-
-		
-
 
 		camera.update();
 
@@ -44,11 +43,14 @@ public class MainMenuScreen implements Screen{
 		TextureRegion myTextureRegion = new TextureRegion(myTexture);
 		TextureRegionDrawable myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
 		ImageButton myButton = new ImageButton(myTexRegionDrawable);
+		myButton.setSize(100,100);
+		myButton.moveBy(700,600);
+
 
 		myButton.addListener(new InputListener() {
 			@Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                new GameController().start(game);
+                gameScreenController.update("GameScreen");
 				return true;
             }
 		});
