@@ -8,8 +8,10 @@ import pt.projeto.batalhadereinos.BatalhaDeReinos;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setTitle("Batalha de Reinos");
+		config.setWindowedMode(1440, 1024);
+		config.useVsync(true);
 		config.setForegroundFPS(60);
-		config.setTitle("batalha-de-reinos");
 		new Lwjgl3Application(new BatalhaDeReinos(), config);
 	}
 }
