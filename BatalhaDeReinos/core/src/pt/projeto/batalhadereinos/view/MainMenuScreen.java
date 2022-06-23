@@ -25,6 +25,8 @@ public class MainMenuScreen implements Screen{
 
 		this.gameScreenController = gameScreenController;
 
+		System.out.println("Carregou MainMenuScreen");
+
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1440, 1024);
 	}
@@ -44,12 +46,13 @@ public class MainMenuScreen implements Screen{
 		TextureRegionDrawable myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
 		ImageButton myButton = new ImageButton(myTexRegionDrawable);
 		myButton.setSize(100,100);
-		myButton.moveBy(700,600);
+		//myButton.moveBy(0,600);
 
 
 		myButton.addListener(new InputListener() {
 			@Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				System.out.println("Apertou o botão");
                 gameScreenController.update("GameScreen");
 				return true;
             }
