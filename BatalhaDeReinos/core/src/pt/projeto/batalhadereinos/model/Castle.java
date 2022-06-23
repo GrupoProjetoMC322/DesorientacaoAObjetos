@@ -3,6 +3,10 @@ package pt.projeto.batalhadereinos.model;
 public class Castle {
     private int health;
 
+    public Castle(){
+        this.health = 30;
+    }
+
     public int getHealth(){
         return health;
     }

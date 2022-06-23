@@ -1,7 +1,26 @@
 package pt.projeto.batalhadereinos.model;
 
 public class Player {
+    private Board board;
     private String name;
     private int coins;
     private Castle base;
+
+    public Player(int num, Board board, String name){
+        this.board = board;
+        this.name = name;
+        this.coins = 5;
+        this.base = board.getCastle(num);
+    } 
+
+    public String getName(){
+        return name;
+    }
+    public int getCoins(){
+        return coins;
+    }
+
+    public Castle getCastle(){
+        return base;
+    }
 }

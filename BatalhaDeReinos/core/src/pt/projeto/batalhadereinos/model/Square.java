@@ -11,21 +11,29 @@ public class Square implements IDrawable{
     private Troop troop;
 
     public Square(String graphicAdress,int row, int column){
-        this.graphic = new Texture(Gdx.files.internal(graphicAdress));
+        this.graphic = new Texture(Gdx.files.internal(graphicAdress+".png"));
         this.row = row;
         this.column = column;
         this.troop = null;
+    }
+
+    public void setTroop(Troop troop){
+        this.troop = troop;
     }
 
     public Troop getTroop(){
         return this.troop;
     }
 
-    public void draw(SpriteBatch batch){
-        int graphicRow = row*64+0;
-        int graphicColumn = column*64+0;
+    public void removeTroop(){
+        this.troop = null;
+    }
 
-        batch.draw(graphic, row, column);
+    public void draw(SpriteBatch batch){
+        int graphicRow = column*100+220;
+        int graphicColumn = 644-row*100;
+
+        batch.draw(graphic, graphicRow, graphicColumn);
 
         if(this.troop != null){
             troop.draw(batch);
