@@ -1,6 +1,6 @@
 package pt.projeto.batalhadereinos.model;
 
-public class Player {
+public class Player implements IPlayerObserver{
     private Board board;
     private String name;
     private int coins;
@@ -22,5 +22,9 @@ public class Player {
 
     public Castle getCastle(){
         return base;
+    }
+
+    public void gainCoins(int number){
+        this.coins += number;
     }
 }

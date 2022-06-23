@@ -9,15 +9,28 @@ public class Rogue extends Troop{
 
     public ArrayList<Troop> verifyRange(){
         ArrayList<Troop> enemyTroopInRange = new ArrayList<>();
-        for(int i = 1; i<=range;i++){
+        if(fromWhichPlayer == 1){
+            for(int i = 1; i<=range;i++){
 
-            boolean troopNotNull = board.getTroop(row, column+i) != null;
-            boolean foundTroopFromOtherPlayer = troopNotNull && (board.getTroop(row, column+i).getFromWhichPlayer() != this.fromWhichPlayer);
-            
-            if(foundTroopFromOtherPlayer){
-                enemyTroopInRange.add(board.getTroop(row, column+i));
+                boolean troopNotNull = board.getTroop(row, column+i) != null;
+                boolean foundTroopFromOtherPlayer = troopNotNull && (board.getTroop(row, column+i).getFromWhichPlayer() != this.fromWhichPlayer);
+                
+                if(foundTroopFromOtherPlayer){
+                    enemyTroopInRange.add(board.getTroop(row, column+i));
+                }
+            }
+        } else {
+            for(int i = 1; i<=range;i++){
+
+                boolean troopNotNull = board.getTroop(row, column-i) != null;
+                boolean foundTroopFromOtherPlayer = troopNotNull && (board.getTroop(row, column+i).getFromWhichPlayer() != this.fromWhichPlayer);
+                
+                if(foundTroopFromOtherPlayer){
+                    enemyTroopInRange.add(board.getTroop(row, column-i));
+                }
             }
         }
+        
         return enemyTroopInRange;
     }
 }

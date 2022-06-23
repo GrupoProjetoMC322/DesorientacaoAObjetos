@@ -51,8 +51,15 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         return this.health;
     }
 
+    public boolean isAlive(){
+        boolean alive = true;
+        if(this.health <= 0){
+            alive = false;
+        }
+        return alive;
+    }
+
     public void die(){
-        System.out.println(this.type+": Morri!");
         board.removeTroop(this.row, this.column);
     }
 
@@ -91,7 +98,7 @@ public abstract class Troop implements ITroopObserver, IDrawable{
     }
 
     public boolean move(){
-        
+
         boolean attacking = false;
         ArrayList<Troop> enemyTroopsFound = new ArrayList<>();
 
@@ -105,17 +112,16 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         for(int i = 1; i<=this.speed && attacking == false; i++){
             
             if(fromWhichPlayer == 1){
-                if(this.column+i >= 0 && this.column+i<= 8){
+                if(this.column+1 >= 0 && this.column+1<= 8){
                     board.removeTroop(this.row, this.column);
                     this.column++;
                     board.addTroop(this, this.row, this.column);
-                    
                 } else{
                     attacking = true;
                 }
             } else{
                 
-                if(this.column-i >= 1 && this.column-i<= 9){
+                if(this.column-1 >= 1 && this.column-1<= 9){
                     board.removeTroop(this.row, this.column);
                     this.column--;
                     board.addTroop(this, this.row, this.column);
@@ -131,7 +137,7 @@ public abstract class Troop implements ITroopObserver, IDrawable{
                 break;
             }
         }
-
+        
         return attacking;
     }
 
@@ -148,20 +154,16 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         // Ataque de tropa acontece quando não estão nessas colunas e verificam range
         if(fromWhichPlayer == 1){
             if(column == 8){
-                System.out.println("Ataca castelo");
                 board.getCastle(2).damageCastle(this.attack);
             } else {
                 ArrayList<Troop> enemyTroopsFound = new ArrayList<>();
                 enemyTroopsFound = verifyRange();
-                System.out.println(enemyTroopsFound.isEmpty());
                 for(Troop enemyTroop : enemyTroopsFound){
-                    System.out.println("chegou aqui");
                     enemyTroop.damageTroop(this.attack);
                 }
             }
         } else {
             if(column == 1){
-                System.out.println("Ataca castelo");
                 board.getCastle(1).damageCastle(this.attack);
             } else{
                 ArrayList<Troop> enemyTroopsFound = new ArrayList<>();

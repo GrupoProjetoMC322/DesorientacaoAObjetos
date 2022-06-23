@@ -9,18 +9,34 @@ public class Mage extends Troop{
 
     public ArrayList<Troop> verifyRange(){
         ArrayList<Troop> enemyTroopInRange = new ArrayList<>();
-        for(int i = 0; i<range;i++){
-            for(int j = 1; j>=-1; j--){
-                boolean troopNotNull = board.getTroop(row+j, column+i) != null;
-                boolean foundTroopFromOtherPlayer = troopNotNull && (board.getTroop(row+j, column+i).getFromWhichPlayer() != this.fromWhichPlayer);
-                
-                if(foundTroopFromOtherPlayer){
-                    enemyTroopInRange.add(board.getTroop(row+j, column+i));
+        if(fromWhichPlayer == 1){
+            for(int i = 0; i<range;i++){
+                for(int j = 1; j>=-1; j--){
+                    boolean troopNotNull = board.getTroop(row+j, column+i) != null;
+                    boolean foundTroopFromOtherPlayer = troopNotNull && (board.getTroop(row+j, column+i).getFromWhichPlayer() != this.fromWhichPlayer);
+                    
+                    if(foundTroopFromOtherPlayer){
+                        enemyTroopInRange.add(board.getTroop(row+j, column+i));
+                    }
+    
                 }
-
-            }
-            
+                
+            }       
+        } else {
+            for(int i = 0; i<range;i++){
+                for(int j = 1; j>=-1; j--){
+                    boolean troopNotNull = board.getTroop(row+j, column-i) != null;
+                    boolean foundTroopFromOtherPlayer = troopNotNull && (board.getTroop(row+j, column-i).getFromWhichPlayer() != this.fromWhichPlayer);
+                    
+                    if(foundTroopFromOtherPlayer){
+                        enemyTroopInRange.add(board.getTroop(row+j, column-i));
+                    }
+    
+                }
+                
+            }     
         }
+        
         return enemyTroopInRange;
     }
 }
