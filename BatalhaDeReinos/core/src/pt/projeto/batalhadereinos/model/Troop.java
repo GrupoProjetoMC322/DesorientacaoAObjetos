@@ -107,9 +107,11 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         if(!enemyTroopsFound.isEmpty()){
             attacking = true;
         }
-        
+
+        boolean nextSquareTroopNotNull = board.getTroop(row, column+1) != null;
+
         // Movement
-        for(int i = 1; i<=this.speed && attacking == false; i++){
+        for(int i = 1; i<=this.speed && attacking == false && !nextSquareTroopNotNull; i++){
             
             if(fromWhichPlayer == 1){
                 if(this.column+1 >= 0 && this.column+1<= 8){
@@ -120,7 +122,6 @@ public abstract class Troop implements ITroopObserver, IDrawable{
                     attacking = true;
                 }
             } else{
-                
                 if(this.column-1 >= 1 && this.column-1<= 9){
                     board.removeTroop(this.row, this.column);
                     this.column--;

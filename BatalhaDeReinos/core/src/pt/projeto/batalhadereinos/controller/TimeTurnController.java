@@ -41,6 +41,7 @@ public class TimeTurnController implements ITurnControllerSubject {
 
         public void subscribeTroop(ITroopObserver troop){
             troopsOnBoard.add(troop);
+            System.out.println(troopsOnBoard.size());
         }
 
         public void unsubscribeTroop(ITroopObserver troop){
@@ -62,6 +63,7 @@ public class TimeTurnController implements ITurnControllerSubject {
             atacantesTreeMap.put(1, new ArrayList<ITroopObserver>());
 
             for(int i = 0; i<troopsOnBoard.size();i++){
+                System.out.println("Notified: " + (((Troop)troopsOnBoard.get(i)).getCost()));
                 boolean attacking = troopsOnBoard.get(i).move();
                 if(attacking){
                     atacantesTreeMap.get(((Troop)troopsOnBoard.get(i)).getCost()).add(troopsOnBoard.get(i));

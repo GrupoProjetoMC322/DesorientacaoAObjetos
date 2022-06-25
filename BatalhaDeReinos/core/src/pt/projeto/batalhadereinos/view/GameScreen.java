@@ -10,20 +10,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
-import pt.projeto.batalhadereinos.controller.ITurnControllerSubject;
-import pt.projeto.batalhadereinos.controller.PlayerController;
-import pt.projeto.batalhadereinos.controller.TimeTurnController;
-import pt.projeto.batalhadereinos.controller.ManualTurnController;
-import pt.projeto.batalhadereinos.model.Archer;
+import pt.projeto.batalhadereinos.controller.GameFacade;
+import pt.projeto.batalhadereinos.controller.IScreenMediator;
 import pt.projeto.batalhadereinos.model.Board;
-import pt.projeto.batalhadereinos.model.Knight;
-import pt.projeto.batalhadereinos.model.Mage;
 import pt.projeto.batalhadereinos.model.Troop;
 
 public class GameScreen implements Screen{
+
     final BatalhaDeReinos game;
-    Board board;
 	OrthographicCamera camera;
+
     Texture BackgroundImage;
     Texture SoldierButtonImage;
     Texture ArcherButtonImage;
@@ -31,6 +27,10 @@ public class GameScreen implements Screen{
     Texture RogueButtonImage;
     Texture BarrierButtonImage;
     Texture MageButtonImage;
+    Texture CoinImage;
+
+    Board board;
+
     Troop mago;
     Troop arqueiro;
     Troop cavaleiro;
@@ -38,24 +38,23 @@ public class GameScreen implements Screen{
     //int firstTime = 0;
     Float time = 0f;
 
-    ITurnControllerSubject turnController;
-    PlayerController playerController;
+    IScreenMediator screenMediator;
+    GameFacade gameFacade;
 
-    public GameScreen(final BatalhaDeReinos game){
+    public GameScreen(final BatalhaDeReinos game, GameFacade gameFacade, IScreenMediator screenMediator){
         this.game = game;
+
+        this.gameFacade = gameFacade;
+        this.screenMediator = screenMediator;
+
+        board = new Board(); 
+
+        gameFacade.setBoard(board);
 
         System.out.println("Carregou GameScreen");
 
         camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1440, 1024);
-
-        board = new Board(); 
-
-        // Passar para Facade
-        turnController = new ManualTurnController();
-        playerController = new PlayerController(board);
-
-        turnController.subscribePlayers(playerController.getPlayer(1), playerController.getPlayer(2));
         
 
         BackgroundImage = new Texture(Gdx.files.internal("Background.png"));
@@ -65,16 +64,11 @@ public class GameScreen implements Screen{
         RogueButtonImage = new Texture(Gdx.files.internal("RogueButton.png"));
         BarrierButtonImage = new Texture(Gdx.files.internal("BarrierButton.png"));
         MageButtonImage = new Texture(Gdx.files.internal("MageButton.png"));
+        CoinImage = new Texture(Gdx.files.internal("Coin.png"));
 
-        mago = new Mage(board,"Mage",0,9,2);
-        arqueiro = new Archer(board, "Mage", 0, 0, 1);
-        cavaleiro = new Knight(board, "Mage", 3, 0, 1);
-        board.addTroop(mago, 0, 9);
-        turnController.subscribeTroop(mago);
-        board.addTroop(arqueiro, 0, 0);
-        turnController.subscribeTroop(arqueiro);
-        board.addTroop(cavaleiro, 3, 0);
-        turnController.subscribeTroop(cavaleiro);
+
+        gameFacade.selectTroop("Rogue", 2);
+        gameFacade.dynamicPlaceTroop(0, 9, 2);
     }
 
     @Override
@@ -95,26 +89,57 @@ public class GameScreen implements Screen{
         game.batch.draw(RogueButtonImage, 728, 95);
         game.batch.draw(BarrierButtonImage, 885, 95);
         game.batch.draw(MageButtonImage, 1042, 95);
+        game.batch.draw(CoinImage, 106, 344);
+        game.batch.draw(CoinImage, 1331, 344);
 
-        board.draw(game.batch);
-
+        time += Gdx.graphics.getDeltaTime();
         
         
+        game.font.draw(game.batch,  "Tempo: " +String.format("%.2f", time) , 1121, 761);
+
+        game.font.draw(game.batch, "Turno: "+gameFacade.getTurn(), 214, 761);
+        game.font.draw(game.batch, gameFacade.getPlayerName(1), 38, 702+16);
+        game.font.draw(game.batch, gameFacade.getPlayerName(2), 1260, 702+16);
+        game.font.draw(game.batch, gameFacade.getCastleHealth(1) + "/ 30", 57, 395+16);
+        game.font.draw(game.batch, gameFacade.getCastleHealth(2) + "/ 30", 1280, 395+16);
+        game.font.draw(game.batch, gameFacade.getPlayerCoins(1) + "", 75, 344+16);
+        game.font.draw(game.batch, gameFacade.getPlayerCoins(2) + "", 1296, 344+16);
+
+        game.font.draw(game.batch, "Selected: " + gameFacade.getSelectedTroop(1), 38, 60);
+        game.font.draw(game.batch, "Selected: " + gameFacade.getSelectedTroop(2), 1304, 60);
         
-        game.font.draw(game.batch, time + "", 50, 50);
 
-        game.font.draw(game.batch, "Turno: "+turnController.getTurn(), 214, 761);
-        game.font.draw(game.batch, playerController.getPlayerName(1), 38, 702+16);
-        game.font.draw(game.batch, playerController.getPlayerName(2), 1260, 702+16);
-        game.font.draw(game.batch, playerController.getCastleHealth(1) + "/ 30", 57, 395+16);
-        game.font.draw(game.batch, playerController.getCastleHealth(2) + "/ 30", 1280, 395+16);
-        game.font.draw(game.batch, playerController.getPlayerCoins(1) + "", 75, 344+16);
-        game.font.draw(game.batch, playerController.getPlayerCoins(2) + "", 1296, 344+16);
 
-        //turnController.passTurn();
-        if(Gdx.input.isKeyJustPressed(Keys.A)){
-            turnController.passTurn();
+        if(gameFacade.getGameMode().equals("time"))
+        {
+            gameFacade.passTurn();
+
+            if(Gdx.input.isKeyJustPressed(Keys.A)){
+                gameFacade.selectTroop("Archer", 1);
+            }
+            if(Gdx.input.isKeyJustPressed(Keys.NUM_1)){
+                gameFacade.dynamicPlaceTroop(0, 0,1);
+            }
+
+        } 
+        else 
+        {
+            if(Gdx.input.isKeyJustPressed(Keys.N)){  // Mover para dentro do 1 dps
+                gameFacade.passTurn();
+            }
+            if(gameFacade.getCurrentPlayer() == 1){
+                if(Gdx.input.isKeyJustPressed(Keys.A)){
+                    gameFacade.selectTroop("Archer", gameFacade.getCurrentPlayer());
+                }
+                if(Gdx.input.isKeyJustPressed(Keys.NUM_1) && !gameFacade.getSelectedTroop(1).equals("None")){
+                    gameFacade.turnPlaceTroop(0, 0);
+                }
+            }
+            
         }
+        
+        gameFacade.renderBoard(game.batch);
+        
 
         game.batch.end();
 
