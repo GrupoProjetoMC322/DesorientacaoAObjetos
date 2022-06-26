@@ -1,31 +1,23 @@
 package pt.projeto.batalhadereinos;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import pt.projeto.batalhadereinos.controller.GameScreenController;
 
 public class BatalhaDeReinos extends Game {
-	public GameScreenController gameScreenController;
-	public SpriteBatch batch;
-	public BitmapFont font;
+	private GameScreenController screenController;
 
 	public void create() {
-		gameScreenController = new GameScreenController(this);
-		batch = new SpriteBatch();
-		
-		font = new BitmapFont(); // use libGDX's default Arial font
-
-		gameScreenController.start();
+		screenController = new GameScreenController(this);
+		screenController.start();
 	}
 
 	public void render() {
-		super.render(); // important!
+		super.render();
 	}
 
-	public void dispose() {
-		batch.dispose();
-		font.dispose();
+	public GameScreenController getScreenController() {
+		return screenController;
 	}
+
 }

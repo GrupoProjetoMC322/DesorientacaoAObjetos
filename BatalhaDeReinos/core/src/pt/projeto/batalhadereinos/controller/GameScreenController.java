@@ -1,30 +1,24 @@
 package pt.projeto.batalhadereinos.controller;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
-import pt.projeto.batalhadereinos.view.GameScreen;
 import pt.projeto.batalhadereinos.view.MainMenuScreen;
+import pt.projeto.batalhadereinos.view.Screen;
 
 public class GameScreenController {
     private BatalhaDeReinos game;
-    private MainMenuScreen mainMenuScreen;
-    private GameScreen gameScreen;
+    private Screen currentScreen;
 
     public GameScreenController(BatalhaDeReinos game){
         this.game = game;
-        this.mainMenuScreen = new MainMenuScreen(game, this);
-        this.gameScreen = new GameScreen(game);
     }
 
     public void start(){
-        System.out.println("funcionou");
-        game.setScreen(mainMenuScreen);
+        currentScreen = new MainMenuScreen(game);
+        game.setScreen(currentScreen);
     }
-    public void update(String screen){
-        if(screen.equals("GameScreen")){
-            game.setScreen(gameScreen);
-        } else {
-            System.out.println("Screen Invalida");
-        }
-        
+
+    public void update(Screen newScreen){
+        this.currentScreen = newScreen;
+        game.setScreen(newScreen);
     }
 }
