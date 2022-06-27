@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("Batalha de Reinos");
 		config.setWindowedMode(1440, 1024);
+		config.setResizable(false);
 		config.useVsync(true);
 		config.setForegroundFPS(60);
 		new Lwjgl3Application(new BatalhaDeReinos(), config);

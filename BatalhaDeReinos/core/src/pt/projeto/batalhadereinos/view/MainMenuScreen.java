@@ -13,17 +13,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
-import pt.projeto.batalhadereinos.controller.GameScreenController;
+import pt.projeto.batalhadereinos.controller.IScreenMediator;
 
 public class MainMenuScreen implements Screen{
     final BatalhaDeReinos game;
-	private GameScreenController gameScreenController;
+	private IScreenMediator screenMediator;
 	OrthographicCamera camera;
 
-	public MainMenuScreen(final BatalhaDeReinos game, GameScreenController gameScreenController) {
+	public MainMenuScreen(final BatalhaDeReinos game, IScreenMediator screenMediator) {
 		this.game = game;
 
-		this.gameScreenController = gameScreenController;
+		this.screenMediator = screenMediator;
+
+		System.out.println("Carregou MainMenuScreen");
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1440, 1024);
@@ -44,18 +46,37 @@ public class MainMenuScreen implements Screen{
 		TextureRegionDrawable myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
 		ImageButton myButton = new ImageButton(myTexRegionDrawable);
 		myButton.setSize(100,100);
-		myButton.moveBy(700,600);
+		myButton.moveBy(600,600);
+
+		TextureRegion myTextureRegion2 = new TextureRegion(myTexture);
+		TextureRegionDrawable myTexRegionDrawable2 = new TextureRegionDrawable(myTextureRegion2);
+		ImageButton myButton2 = new ImageButton(myTexRegionDrawable2);
+		myButton2.setSize(100,100);
+		myButton2.moveBy(800,600);
 
 
 		myButton.addListener(new InputListener() {
 			@Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gameScreenController.update("GameScreen");
+				System.out.println("Apertou o botão");
+                screenMediator.changeScreen("NewDynamicGameScreen");
+				Gdx.input.setInputProcessor(null);
+				return true;
+            }
+		});
+
+		myButton2.addListener(new InputListener() {
+			@Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				System.out.println("Apertou o botão");
+                screenMediator.changeScreen("NewTurnGameScreen");
+				Gdx.input.setInputProcessor(null);
 				return true;
             }
 		});
 
         stage.addActor(myButton);
+		stage.addActor(myButton2);
 
 
 		game.batch.setProjectionMatrix(camera.combined);
@@ -64,6 +85,7 @@ public class MainMenuScreen implements Screen{
 		game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
 		game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
 		myButton.draw(game.batch, 1);
+		myButton2.draw(game.batch, 1);
 		game.batch.end();
 	}
 
