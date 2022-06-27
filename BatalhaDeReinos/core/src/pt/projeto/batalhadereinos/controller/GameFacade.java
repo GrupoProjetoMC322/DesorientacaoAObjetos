@@ -10,6 +10,7 @@ public class GameFacade {
     TroopCreatorController troopCreatorController;
     PlayerController playerController;
     BuffGeneratorController buffGeneratorController;
+    MapChangerController mapChangerController;
     Board board;
 
     String gameMode;
@@ -27,6 +28,7 @@ public class GameFacade {
         this.troopCreatorController = new TroopCreatorController(this.board);
         this.buffGeneratorController = new BuffGeneratorController(this.board);
         this.playerController = new PlayerController(this.board);
+        this.mapChangerController = new MapChangerController(this.board);
         turnController.subscribePlayers(playerController.getPlayer(1), playerController.getPlayer(2));
     }
 
@@ -40,7 +42,9 @@ public class GameFacade {
     public void determineTurnController(){
         if(gameMode.equals("time")){
             this.turnController = new TimeTurnController();
-        } else {
+        } else if(gameMode.equals("time2")){
+            this.turnController = new InsaneTimeTurnController();
+        } else{
             this.turnController = new ManualTurnController();
         }
     }
@@ -53,8 +57,12 @@ public class GameFacade {
         turnController.passTurn();
     }
 
-    public void tryGenerateBuff(int turn){
-        buffGeneratorController.tryGenerateBuff(turnController.getTurn());
+    public void tryGenerateBuff(){
+        buffGeneratorController.tryGenerateBuff(getTurn());
+    }
+
+    public void tryChangeMap(){
+        mapChangerController.tryChangeMap(getTurn());
     }
    
     //Player

@@ -7,6 +7,14 @@ public class Rogue extends Troop{
         super(board, graphicAdress, row, column, 6, 3, 3, 1, 1, "Rogue", fromWhichPlayer);
     }
 
+    public void verifyMap(){
+        if(board.getMap().equals("Field") ||board.getMap().equals("Mist") || board.getMap().equals("Volcano")){
+            this.attack = 3;
+        } else{
+            this.attack = 6;
+        }
+    }
+
     public ArrayList<Troop> verifyRange(){
         ArrayList<Troop> enemyTroopInRange = new ArrayList<>();
             for(int i = -1; i<=range;i++){

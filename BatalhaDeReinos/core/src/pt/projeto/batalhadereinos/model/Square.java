@@ -10,6 +10,7 @@ public class Square implements IDrawable{
     private int column;
     private Troop troop;
     private Buff buff;
+    private boolean fire;
 
     public Square(String graphicAdress,int row, int column){
         this.graphic = new Texture(Gdx.files.internal(graphicAdress+".png"));
@@ -17,6 +18,7 @@ public class Square implements IDrawable{
         this.column = column;
         this.troop = null;
         this.buff = null;
+        this.fire = false;
     }
 
     
@@ -49,7 +51,13 @@ public class Square implements IDrawable{
         int graphicRow = column*100+220;
         int graphicColumn = 644-row*100;
 
+        if(this.fire == true){
+            this.graphic = new Texture(Gdx.files.internal("FireRectangle.png"));
+        }
+
         batch.draw(graphic, graphicRow, graphicColumn);
+
+        
 
         if(this.buff != null){
             buff.draw(batch);

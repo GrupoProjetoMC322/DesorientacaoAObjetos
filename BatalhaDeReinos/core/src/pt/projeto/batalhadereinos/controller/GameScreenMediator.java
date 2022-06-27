@@ -30,6 +30,11 @@ public class GameScreenMediator implements IScreenMediator{
                 this.gameScreen = new GameScreen(game, gameFacade, this);
                 game.setScreen(gameScreen);
                 break;
+            case "NewInsaneDynamicGameScreen":
+                gameFacade = new GameFacade("time2");
+                this.gameScreen = new GameScreen(game, gameFacade, this);
+                game.setScreen(gameScreen);
+                break;
             default:
                 System.out.println("Screen Invalida");
                 break;

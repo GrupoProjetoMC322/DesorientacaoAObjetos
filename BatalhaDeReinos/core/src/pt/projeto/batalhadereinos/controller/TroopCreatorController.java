@@ -41,8 +41,6 @@ public class TroopCreatorController {
         Troop troop;
         String selectedTroop;
 
-        System.out.println(currentPlayerCoins);
-
         if(currentPlayer == 1){
             selectedTroop = this.selectedTroopByPlayer1;
         } else {

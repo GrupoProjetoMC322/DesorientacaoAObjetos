@@ -8,6 +8,8 @@ public class Board implements IDrawable{
     private Castle player1Castle;
     private Castle player2Castle;
 
+    private String map;
+
     public Board(){
       boardPositions = new Square[4][10];
       for(int i = 0;i<4;i++){
@@ -17,6 +19,8 @@ public class Board implements IDrawable{
       }
       player1Castle = new Castle();
       player2Castle = new Castle();
+
+      this.map = "Field";
     }
 
     public void addTroop(Troop troop,int row, int column){
@@ -55,6 +59,13 @@ public class Board implements IDrawable{
       boardPositions[row][column].removeBuff();
     }
     
+    public String getMap(){
+      return this.map;
+    }
+    public void setMap(String map){
+      this.map = map;
+    }
+
 
     public void draw(SpriteBatch batch) {
       for(Square[] boardRow : boardPositions){

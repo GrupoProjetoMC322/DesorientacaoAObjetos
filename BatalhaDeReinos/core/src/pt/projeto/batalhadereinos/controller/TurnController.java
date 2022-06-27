@@ -19,7 +19,6 @@ public abstract class TurnController {
 
     public void subscribeTroop(ITroopObserver troop){
         troopsOnBoard.add(troop);
-        System.out.println(troopsOnBoard.size());
     }
 
     public void unsubscribeTroop(ITroopObserver troop){
@@ -34,14 +33,24 @@ public abstract class TurnController {
     public void notifyTroops(){
         TreeMap<Integer,ArrayList<ITroopObserver>> atacantesTreeMap = new TreeMap<>(Collections.reverseOrder());
 
+        atacantesTreeMap.put(24, new ArrayList<ITroopObserver>());
+        atacantesTreeMap.put(20, new ArrayList<ITroopObserver>());
+        atacantesTreeMap.put(16, new ArrayList<ITroopObserver>());
+        atacantesTreeMap.put(6, new ArrayList<ITroopObserver>());
+        atacantesTreeMap.put(4, new ArrayList<ITroopObserver>());
+        atacantesTreeMap.put(12, new ArrayList<ITroopObserver>());
         atacantesTreeMap.put(10, new ArrayList<ITroopObserver>());
+        atacantesTreeMap.put(8, new ArrayList<ITroopObserver>());
         atacantesTreeMap.put(5, new ArrayList<ITroopObserver>());
         atacantesTreeMap.put(3, new ArrayList<ITroopObserver>());
         atacantesTreeMap.put(2, new ArrayList<ITroopObserver>());
         atacantesTreeMap.put(1, new ArrayList<ITroopObserver>());
 
         for(int i = 0; i<troopsOnBoard.size();i++){
-            System.out.println("Notified: " + (((Troop)troopsOnBoard.get(i)).getCost()));
+            //System.out.println("Notified: " + (((Troop)troopsOnBoard.get(i)).getCost()));
+            if(this.turn % 10 == 0){
+                troopsOnBoard.get(i).verifyMap();
+            }
             boolean attacking = troopsOnBoard.get(i).move();
             if(attacking){
                 atacantesTreeMap.get(((Troop)troopsOnBoard.get(i)).getCost()).add(troopsOnBoard.get(i));

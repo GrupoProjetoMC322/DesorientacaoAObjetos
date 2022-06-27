@@ -59,7 +59,7 @@ public class MainMenuScreen implements Screen{
 			@Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("Apertou o botão");
-                screenMediator.changeScreen("NewDynamicGameScreen");
+                screenMediator.changeScreen("NewInsaneDynamicGameScreen");
 				Gdx.input.setInputProcessor(null);
 				return true;
             }

@@ -44,6 +44,9 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         this.fromWhichPlayer = fromWhichPlayer;
 	}
 
+
+    public abstract void verifyMap();
+
     public int getCost(){
         return this.cost;
     }
@@ -115,15 +118,18 @@ public abstract class Troop implements ITroopObserver, IDrawable{
                 switch (board.getBuff(this.row, this.column).getType()) {
                     case "HealthPotion":
                         this.health *= 2;
+                        this.cost *= 2;
                         this.buff = "Health";
                         break;
                     case "AttackPotion":
                         this.attack *= 2;
+                        this.cost *= 2;
                         this.buff = "Attack";
                         break;
                     case "MixedPotion":
                         this.health *= 2;
                         this.attack *= 2;
+                        this.cost *= 2;
                         this.buff = "Mixed";
                         break;
                     default:

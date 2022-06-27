@@ -20,7 +20,14 @@ public class GameScreen implements Screen{
     final BatalhaDeReinos game;
 	OrthographicCamera camera;
 
-    Texture BackgroundImage;
+    Texture BackgroundFieldImage;
+    Texture BackgroundVolcanoImage;
+    Texture BackgroundMistImage;
+    Texture BackgroundSnowImage;
+
+    Texture MistLeftImage;
+    Texture MistRightImage;
+
     Texture SoldierButtonImage;
     Texture ArcherButtonImage;
     Texture KnightButtonImage;
@@ -57,7 +64,15 @@ public class GameScreen implements Screen{
 		camera.setToOrtho(false, 1440, 1024);
         
 
-        BackgroundImage = new Texture(Gdx.files.internal("Background.png"));
+        BackgroundFieldImage = new Texture(Gdx.files.internal("BackgroundField.png"));
+        BackgroundSnowImage = new Texture(Gdx.files.internal("BackgroundSnow.png"));
+        BackgroundMistImage = new Texture(Gdx.files.internal("BackgroundMist.png"));
+        BackgroundVolcanoImage = new Texture(Gdx.files.internal("BackgroundVolcano.png"));
+
+        MistLeftImage = new Texture(Gdx.files.internal("MistLeft.png"));
+        MistRightImage = new Texture(Gdx.files.internal("MistRight.png"));
+
+
         SoldierButtonImage = new Texture(Gdx.files.internal("SoldierButton.png"));
         ArcherButtonImage = new Texture(Gdx.files.internal("ArcherButton.png"));
         KnightButtonImage = new Texture(Gdx.files.internal("KnightButton.png"));
@@ -82,7 +97,27 @@ public class GameScreen implements Screen{
 
         game.batch.begin();
 
-        game.batch.draw(BackgroundImage,0,0);
+
+        switch(board.getMap()){
+            case "Field":
+                game.batch.draw(BackgroundFieldImage,0,0);
+                break;
+            case "Volcano":
+                game.batch.draw(BackgroundVolcanoImage,0,0);
+                break;
+            case "Mist":
+                game.batch.draw(BackgroundMistImage,0,0);
+                break;
+            case "Snow":
+                game.batch.draw(BackgroundSnowImage,0,0);
+                break;
+            default:
+                System.out.println("Couldnt find this map");
+                break;
+        }
+        
+
+
 		game.batch.draw(SoldierButtonImage, 257, 95);
         game.batch.draw(ArcherButtonImage, 414, 95);
         game.batch.draw(KnightButtonImage, 571, 95);
@@ -110,14 +145,15 @@ public class GameScreen implements Screen{
         
 
 
-        if(gameFacade.getGameMode().equals("time"))
+        if(gameFacade.getGameMode().equals("time") || gameFacade.getGameMode().equals("time2"))
         {
             int turn = gameFacade.getTurn();
 
             gameFacade.passTurn();
 
             if(gameFacade.getTurn() != turn){
-                gameFacade.tryGenerateBuff(gameFacade.getTurn());
+                gameFacade.tryGenerateBuff();
+                gameFacade.tryChangeMap();
             }
 
             if(Gdx.input.isKeyJustPressed(Keys.A)){
@@ -132,7 +168,8 @@ public class GameScreen implements Screen{
         {
             if(Gdx.input.isKeyJustPressed(Keys.N)){  // Mover para dentro do 1 dps
                 gameFacade.passTurn();
-                gameFacade.tryGenerateBuff(gameFacade.getTurn());
+                gameFacade.tryGenerateBuff();
+                gameFacade.tryChangeMap();
             }
             if(gameFacade.getCurrentPlayer() == 1){
                 if(Gdx.input.isKeyJustPressed(Keys.A)){
@@ -147,6 +184,12 @@ public class GameScreen implements Screen{
         
         gameFacade.renderBoard(game.batch);
         
+
+        if(board.getMap().equals("Mist")){
+            game.batch.draw(MistLeftImage,284,330);
+            game.batch.draw(MistRightImage,795,327);
+        }
+
 
         game.batch.end();
 
