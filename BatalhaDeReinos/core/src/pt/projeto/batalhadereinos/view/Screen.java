@@ -16,11 +16,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
-import pt.projeto.batalhadereinos.controller.GameScreenController;
+import pt.projeto.batalhadereinos.controller.GameScreenMediator;
+import pt.projeto.batalhadereinos.controller.IScreenMediator;
 
 public abstract class Screen extends ScreenAdapter {
     protected final BatalhaDeReinos game;
-    protected GameScreenController screenController;
+    protected IScreenMediator gameScreenMediator;
 	protected SpriteBatch batch;
 	protected BitmapFont font;
 	protected OrthographicCamera camera;
@@ -31,7 +32,7 @@ public abstract class Screen extends ScreenAdapter {
 
     public Screen(BatalhaDeReinos game) {
         this.game = game;
-        screenController = game.getScreenController();
+        gameScreenMediator = new GameScreenMediator(game);
         batch = new SpriteBatch();
         font = new BitmapFont();
         stage = new Stage();

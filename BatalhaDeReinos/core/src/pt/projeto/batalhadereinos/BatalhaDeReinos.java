@@ -2,22 +2,18 @@ package pt.projeto.batalhadereinos;
 
 import com.badlogic.gdx.Game;
 
-import pt.projeto.batalhadereinos.controller.GameScreenController;
+import pt.projeto.batalhadereinos.controller.GameScreenMediator;
+import pt.projeto.batalhadereinos.controller.IScreenMediator;
 
 public class BatalhaDeReinos extends Game {
-	private GameScreenController screenController;
+	public IScreenMediator gameScreenMediator;
 
 	public void create() {
-		screenController = new GameScreenController(this);
-		screenController.start();
+		gameScreenMediator = new GameScreenMediator(this);
+		gameScreenMediator.changeScreen("MainMenu");
 	}
 
 	public void render() {
 		super.render();
 	}
-
-	public GameScreenController getScreenController() {
-		return screenController;
-	}
-
 }

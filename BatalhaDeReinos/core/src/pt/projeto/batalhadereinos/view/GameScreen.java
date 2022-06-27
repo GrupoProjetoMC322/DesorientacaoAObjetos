@@ -7,6 +7,10 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
+import pt.projeto.batalhadereinos.controller.GameFacade;
+import pt.projeto.batalhadereinos.controller.IScreenMediator;
+import pt.projeto.batalhadereinos.model.Board;
+import pt.projeto.batalhadereinos.model.Troop;
 
 public class GameScreen extends Screen {
     private static final int[] STANDARD_SETTINGS = {1, 0};
@@ -68,7 +72,7 @@ public class GameScreen extends Screen {
                         System.out.println("Jogador 1: Turno pulado!");
                         break;
                     case Input.Keys.ESCAPE:
-                        screenController.update(new PauseScreen(game, gameScreen));
+                        gameScreenMediator.changeScreen("Pause");
                         break;
                 }
                 return true;
@@ -98,7 +102,7 @@ public class GameScreen extends Screen {
     public void createWidgets() {
         createButton("buttons/btnPause.png", 32, 926,
                     new IButtonCommand() {public void execute() {
-                        screenController.update(new PauseScreen(game, gameScreen));
+                        gameScreenMediator.changeScreen("Pause");
                     }});
         
         createButton("buttons/btnSoldier.png", 257, 136,
