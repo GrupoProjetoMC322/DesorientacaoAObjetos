@@ -16,7 +16,13 @@ public class Mage extends Troop{
                     boolean foundTroopFromOtherPlayer = troopNotNull && (board.getTroop(row+j, column+i).getFromWhichPlayer() != this.fromWhichPlayer);
                     
                     if(foundTroopFromOtherPlayer){
-                        enemyTroopInRange.add(board.getTroop(row+j, column+i));
+                        Troop troopFound = board.getTroop(row+j, column+i);
+                        if(troopFound.getType() == "Barrier"){
+                            ArrayList<Troop> barrierTroopInRange = new ArrayList<>();
+                            barrierTroopInRange.add(troopFound);
+                            return barrierTroopInRange;
+                        }
+                        enemyTroopInRange.add(troopFound);
                     }
     
                 }
@@ -29,7 +35,13 @@ public class Mage extends Troop{
                     boolean foundTroopFromOtherPlayer = troopNotNull && (board.getTroop(row+j, column-i).getFromWhichPlayer() != this.fromWhichPlayer);
                     
                     if(foundTroopFromOtherPlayer){
-                        enemyTroopInRange.add(board.getTroop(row+j, column-i));
+                        Troop troopFound = board.getTroop(row+j, column-i);
+                        if(troopFound.getType() == "Barrier"){
+                            ArrayList<Troop> barrierTroopInRange = new ArrayList<>();
+                            barrierTroopInRange.add(troopFound);
+                            return barrierTroopInRange;
+                        }
+                        enemyTroopInRange.add(troopFound);
                     }
     
                 }

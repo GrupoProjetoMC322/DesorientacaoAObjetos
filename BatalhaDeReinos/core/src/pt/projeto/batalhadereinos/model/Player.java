@@ -26,6 +26,9 @@ public class Player implements IPlayerObserver{
 
     public void gainCoins(int number){
         this.coins += number;
+        if(this.coins > 20){
+            this.coins = 20;
+        }
     }
 
     public void payCoins(int number){

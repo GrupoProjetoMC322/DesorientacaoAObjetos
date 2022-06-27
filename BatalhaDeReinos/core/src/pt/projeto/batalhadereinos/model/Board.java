@@ -31,13 +31,30 @@ public class Board implements IDrawable{
       return troop;
     }
 
+    public void removeTroop(int row, int column){
+      boardPositions[row][column].removeTroop();
+    }
+
     public Castle getCastle(int num) {
       return num == 1 ? player1Castle : player2Castle;
     }
 
-    public void removeTroop(int row, int column){
-      boardPositions[row][column].removeTroop();
+    public void addBuff(Buff buff,int row, int column){
+      boardPositions[row][column].setBuff(buff);
     }
+
+    public Buff getBuff(int row, int column) {
+      Buff buff = null;
+      if(row >= 0 && row <= 4 && column >= 0 && column <= 9){
+        buff = boardPositions[row][column].getBuff();
+      }
+      return buff;
+    }
+
+    public void removeBuff(int row, int column){
+      boardPositions[row][column].removeBuff();
+    }
+    
 
     public void draw(SpriteBatch batch) {
       for(Square[] boardRow : boardPositions){

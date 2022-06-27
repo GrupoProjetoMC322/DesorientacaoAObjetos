@@ -112,7 +112,13 @@ public class GameScreen implements Screen{
 
         if(gameFacade.getGameMode().equals("time"))
         {
+            int turn = gameFacade.getTurn();
+
             gameFacade.passTurn();
+
+            if(gameFacade.getTurn() != turn){
+                gameFacade.tryGenerateBuff(gameFacade.getTurn());
+            }
 
             if(Gdx.input.isKeyJustPressed(Keys.A)){
                 gameFacade.selectTroop("Archer", 1);
@@ -126,6 +132,7 @@ public class GameScreen implements Screen{
         {
             if(Gdx.input.isKeyJustPressed(Keys.N)){  // Mover para dentro do 1 dps
                 gameFacade.passTurn();
+                gameFacade.tryGenerateBuff(gameFacade.getTurn());
             }
             if(gameFacade.getCurrentPlayer() == 1){
                 if(Gdx.input.isKeyJustPressed(Keys.A)){

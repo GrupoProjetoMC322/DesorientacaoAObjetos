@@ -9,6 +9,7 @@ public class GameFacade {
     ITurnControllerSubject turnController;
     TroopCreatorController troopCreatorController;
     PlayerController playerController;
+    BuffGeneratorController buffGeneratorController;
     Board board;
 
     String gameMode;
@@ -24,6 +25,7 @@ public class GameFacade {
     public void setBoard(Board board){
         this.board = board;
         this.troopCreatorController = new TroopCreatorController(this.board);
+        this.buffGeneratorController = new BuffGeneratorController(this.board);
         this.playerController = new PlayerController(this.board);
         turnController.subscribePlayers(playerController.getPlayer(1), playerController.getPlayer(2));
     }
@@ -51,6 +53,10 @@ public class GameFacade {
         turnController.passTurn();
     }
 
+    public void tryGenerateBuff(int turn){
+        buffGeneratorController.tryGenerateBuff(turnController.getTurn());
+    }
+   
     //Player
 
     public int getCurrentPlayer(){

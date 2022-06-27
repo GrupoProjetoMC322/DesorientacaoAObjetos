@@ -5,11 +5,17 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Troop implements ITroopObserver, IDrawable{
     protected Board board;
+
     protected Texture graphic;
+    protected TextureRegion textureRegion;
+    protected Sprite sprite;
+
     protected int row;
     protected int column;
     protected int health;
@@ -18,7 +24,10 @@ public abstract class Troop implements ITroopObserver, IDrawable{
     protected int range;
     protected int speed;
     protected String type;
+
     protected int fromWhichPlayer;
+
+    protected String buff = "None";
 
     public Troop(Board board, String graphicAdress, int row, int column, int health, int attack,
     int cost, int range, int speed, String type, int fromWhichPlayer) {
@@ -49,6 +58,9 @@ public abstract class Troop implements ITroopObserver, IDrawable{
     }
     public int getHealth(){
         return this.health;
+    }
+    public String getType(){
+        return this.type;
     }
 
     public boolean isAlive(){
@@ -97,6 +109,31 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         return enemyTroopInRange;
     }
 
+    public void verifyBuff(){
+        if(board.getBuff(this.row, this.column) != null){
+            if(this.buff == "None"){
+                switch (board.getBuff(this.row, this.column).getType()) {
+                    case "HealthPotion":
+                        this.health *= 2;
+                        this.buff = "Health";
+                        break;
+                    case "AttackPotion":
+                        this.attack *= 2;
+                        this.buff = "Attack";
+                        break;
+                    case "MixedPotion":
+                        this.health *= 2;
+                        this.attack *= 2;
+                        this.buff = "Mixed";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            board.removeBuff(this.row, this.column);
+        }
+    }
+
     public boolean move(){
 
         boolean attacking = false;
@@ -117,6 +154,7 @@ public abstract class Troop implements ITroopObserver, IDrawable{
                 if(this.column+1 >= 0 && this.column+1<= 8){
                     board.removeTroop(this.row, this.column);
                     this.column++;
+                    verifyBuff();
                     board.addTroop(this, this.row, this.column);
                 } else{
                     attacking = true;
@@ -125,6 +163,7 @@ public abstract class Troop implements ITroopObserver, IDrawable{
                 if(this.column-1 >= 1 && this.column-1<= 9){
                     board.removeTroop(this.row, this.column);
                     this.column--;
+                    verifyBuff();
                     board.addTroop(this, this.row, this.column);
                 } else{
                     attacking = true;
@@ -183,7 +222,32 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         int graphicRow = column*100+220;
         int graphicColumn = +644-row*100;
 
-        batch.draw(graphic, graphicRow, graphicColumn);
+        if(!buff.equals("None")){
+            textureRegion = new TextureRegion(graphic);
+            sprite = new Sprite(textureRegion);
+
+            switch (this.buff) {
+                case "Health":
+                    batch.setColor(1f,0f,0f,1f);
+                    break;
+                case "Attack":
+                    batch.setColor(0f,0f,1f,1f);
+                    break;
+                case "Mixed":
+                    batch.setColor(1f,0f,1f,1f);
+                    break;
+                default:
+                    break;     
+            }
+
+            batch.draw(graphic, graphicRow, graphicColumn);
+
+            batch.setColor(1,1,1,1);
+
+        } else{
+            batch.draw(graphic, graphicRow, graphicColumn);
+        }
+        
     }
     
 }

@@ -60,6 +60,7 @@ public class MainMenuScreen implements Screen{
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("Apertou o botão");
                 screenMediator.changeScreen("NewDynamicGameScreen");
+				Gdx.input.setInputProcessor(null);
 				return true;
             }
 		});
@@ -69,6 +70,7 @@ public class MainMenuScreen implements Screen{
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("Apertou o botão");
                 screenMediator.changeScreen("NewTurnGameScreen");
+				Gdx.input.setInputProcessor(null);
 				return true;
             }
 		});
