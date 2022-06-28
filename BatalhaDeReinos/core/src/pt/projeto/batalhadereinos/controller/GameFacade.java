@@ -1,19 +1,17 @@
 package pt.projeto.batalhadereinos.controller;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import pt.projeto.batalhadereinos.model.Board;
 import pt.projeto.batalhadereinos.model.Buff;
 import pt.projeto.batalhadereinos.model.Troop;
 
 public class GameFacade {
-    ITurnControllerSubject turnController;
-    TroopCreatorController troopCreatorController;
-    PlayerController playerController;
-    BuffGeneratorController buffGeneratorController;
-    MapChangerController mapChangerController;
-    Board board;
-    String gameMode;
+    private ITurnControllerSubject turnController;
+    private TroopCreatorController troopCreatorController;
+    private PlayerController playerController;
+    private BuffGeneratorController buffGeneratorController;
+    private MapChangerController mapChangerController;
+    private Board board;
+    private String gameMode;
 
 
     // Creation

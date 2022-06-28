@@ -4,8 +4,8 @@ import pt.projeto.batalhadereinos.model.Board;
 import pt.projeto.batalhadereinos.model.Player;
 
 public class PlayerController {
-    Player player1;
-    Player player2;
+    private Player player1;
+    private Player player2;
 
     public PlayerController(Board board){
         player1 = new Player(1,board,"Player 1");

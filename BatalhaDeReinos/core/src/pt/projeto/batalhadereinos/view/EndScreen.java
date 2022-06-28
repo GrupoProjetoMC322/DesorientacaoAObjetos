@@ -7,10 +7,9 @@ import pt.projeto.batalhadereinos.controller.IScreenMediator;
 
 public class EndScreen extends Screen {
 
-    String vencedor;
-    String tempoDeJogo;
+    private String vencedor;
+    private String tempoDeJogo;
 
-   
     public EndScreen(BatalhaDeReinos game, IScreenMediator gameScreenMediator) {
         super(game, gameScreenMediator);
     }

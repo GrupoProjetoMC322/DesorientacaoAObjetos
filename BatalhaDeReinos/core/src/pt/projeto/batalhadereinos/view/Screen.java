@@ -29,6 +29,7 @@ public abstract class Screen extends ScreenAdapter {
     protected Texture bgImg;
     protected ArrayList<MyButton> buttons;
 
+
     public Screen(BatalhaDeReinos game, IScreenMediator gameScreenMediator) {
         this.game = game;
         this.gameScreenMediator = gameScreenMediator;
@@ -75,6 +76,10 @@ public abstract class Screen extends ScreenAdapter {
 
     public void setBackgroundImage(String path) {
         this.bgImg = new Texture(Gdx.files.internal(path));
+    }
+
+    public void setBackgroundImage(Texture texture) {
+        this.bgImg = texture;
     }
 
     public MyButton createButton(String path, float x, float y, final IButtonCommand buttonCommand) {

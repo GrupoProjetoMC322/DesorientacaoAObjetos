@@ -17,13 +17,26 @@ public class GameScreen extends Screen {
 
     private GameFacade gameFacade;
 
-    PauseScreen pauseScreen;
-    EndScreen endScreen;
+    private PauseScreen pauseScreen;
+    private EndScreen endScreen;
 
     private Board board;
 
-    Texture mistLeftImage;
-    Texture mistRightImage;
+    private Texture mistLeftImage;
+    private Texture mistRightImage;
+    private Texture fireRectangle;
+
+    private Texture fieldGameBackground;
+    private Texture volcanoGameBackground;
+    private Texture snowGameBackground;
+    private Texture mistGameBackground;
+
+    private Texture fieldPauseBackground;
+    private Texture volcanoPauseBackground;
+    private Texture snowPauseBackground;
+    private Texture mistPauseBackground;
+
+    
 
     private MyLabel life1, life2, coins1, coins2, turnCounter, timer;
 
@@ -34,14 +47,29 @@ public class GameScreen extends Screen {
         this.gameFacade = gameFacade;
         this.pauseScreen = pauseScreen;
         this.endScreen = endScreen;
-
-        this.mistLeftImage = new Texture(Gdx.files.internal("icons/MistLeft.png"));
-        this.mistRightImage = new Texture(Gdx.files.internal("icons/MistRight.png"));
+     
+        generateTextures();
 
         board = new Board();
         gameFacade.setBoard(board);
 
         createWidgets();
+    }
+
+    public void generateTextures(){
+        this.mistLeftImage = new Texture(Gdx.files.internal("icons/MistLeft.png"));
+        this.mistRightImage = new Texture(Gdx.files.internal("icons/MistRight.png"));
+        this.fireRectangle = new Texture(Gdx.files.internal("icons/FireRectangle.png"));
+
+        this.fieldGameBackground = new Texture(Gdx.files.internal("background/FieldGameBackground.jpg"));
+        this.volcanoGameBackground = new Texture(Gdx.files.internal("background/VolcanoGameBackground.jpg"));
+        this.snowGameBackground = new Texture(Gdx.files.internal("background/SnowGameBackground.jpg"));
+        this.mistGameBackground = new Texture(Gdx.files.internal("background/MistGameBackground.jpg"));
+
+        this.fieldPauseBackground = new Texture(Gdx.files.internal("background/FieldPauseBackground.jpg"));
+        this.volcanoPauseBackground = new Texture(Gdx.files.internal("background/VolcanoPauseBackground.jpg"));
+        this.snowPauseBackground = new Texture(Gdx.files.internal("background/SnowPauseBackground.jpg"));
+        this.mistPauseBackground = new Texture(Gdx.files.internal("background/MistPauseBackground.jpg"));
     }
 
     public String formatTime() {
@@ -131,7 +159,7 @@ public class GameScreen extends Screen {
         });
         Gdx.input.setInputProcessor(multiplexer);
 
-        setBackgroundImage("background/FieldGameBackground.jpg");     
+        setBackgroundImage(fieldGameBackground);     
     }
 
     public void createWidgets() {
@@ -237,7 +265,6 @@ public class GameScreen extends Screen {
                 int graphicColumnBuff= 658-i*100;
 
                 if(fire){
-                    Texture fireRectangle = new Texture(Gdx.files.internal("icons/FireRectangle.png"));
                     batch.draw(fireRectangle, graphicRowTroop, graphicColumnTroop);
                 }
 
@@ -275,14 +302,34 @@ public class GameScreen extends Screen {
         }
     }
 
- 	public void render(float delta){
+    public void defineBackgroundImages() {
+        switch (gameFacade.getMap()) {
+            case "Field":
+                this.setBackgroundImage(fieldGameBackground);
+                pauseScreen.setBackgroundImage(fieldPauseBackground);
+                break;
+            case "Volcano":
+                this.setBackgroundImage(volcanoGameBackground);
+                pauseScreen.setBackgroundImage(volcanoPauseBackground);
+                break;
+            case "Snow":
+                this.setBackgroundImage(snowGameBackground);
+                pauseScreen.setBackgroundImage(snowPauseBackground);
+                break;
+            case "Mist":
+                this.setBackgroundImage(mistGameBackground);
+                pauseScreen.setBackgroundImage(mistPauseBackground);
+                break;
+        }
+    }
+
+ 	public void render(float delta) {
         super.render(delta);
 
         time += Gdx.graphics.getDeltaTime();
         timer.update(formatTime());
 
-        this.setBackgroundImage("background/" + gameFacade.getMap() + "GameBackground.jpg");
-        pauseScreen.setBackgroundImage("background/" + gameFacade.getMap() + "PauseBackground.jpg");
+        defineBackgroundImages();
 
         if (gameFacade.getGameMode().equals("turn"))
             turnCounter.update("Turno: " + gameFacade.getTurn());
