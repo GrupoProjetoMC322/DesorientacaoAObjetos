@@ -28,7 +28,7 @@ public class TimeTurnController extends TurnController implements ITurnControlle
 
         public void notifyPlayers(){
             int coinsEarnedPerTurn = (turn / 5) + 1;
+            givePlayerCoins(0, coinsEarnedPerTurn);
             givePlayerCoins(1, coinsEarnedPerTurn);
-            givePlayerCoins(2, coinsEarnedPerTurn);
         }
 }

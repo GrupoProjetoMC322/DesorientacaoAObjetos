@@ -1,11 +1,12 @@
 package pt.projeto.batalhadereinos.view;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
+import pt.projeto.batalhadereinos.controller.IScreenMediator;
 
 public class CreditScreen extends Screen {
 
-    public CreditScreen(BatalhaDeReinos game) {
-        super(game);
+    public CreditScreen(BatalhaDeReinos game, IScreenMediator gameScreenMediator) {
+        super(game,gameScreenMediator);
     }
 
     public void show() {
@@ -15,7 +16,7 @@ public class CreditScreen extends Screen {
 
         createButton("buttons/btnVoltar.png", 605, 28,
                     new IButtonCommand() {public void execute() {
-                        screenController.update(new MainMenuScreen(game));
+                        gameScreenMediator.changeScreen("MainMenu");
                     }});
     }
 

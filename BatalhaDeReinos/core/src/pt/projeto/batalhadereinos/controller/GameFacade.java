@@ -3,6 +3,7 @@ package pt.projeto.batalhadereinos.controller;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import pt.projeto.batalhadereinos.model.Board;
+import pt.projeto.batalhadereinos.model.Buff;
 import pt.projeto.batalhadereinos.model.Troop;
 
 public class GameFacade {
@@ -12,7 +13,6 @@ public class GameFacade {
     BuffGeneratorController buffGeneratorController;
     MapChangerController mapChangerController;
     Board board;
-
     String gameMode;
 
 
@@ -36,6 +36,9 @@ public class GameFacade {
         return this.gameMode;
     }
 
+    public String getMap(){
+        return board.getMap();
+    }
 
     // Turns
 
@@ -95,7 +98,7 @@ public class GameFacade {
     }
 
     public void dynamicPlaceTroop(int row, int column, int currentPlayer){
-        Troop troop = troopCreatorController.placeTroop(row, column, currentPlayer,getPlayerCoins(currentPlayer));
+        Troop troop = troopCreatorController.placeTroop(row, column, currentPlayer, getPlayerCoins(currentPlayer));
         if(troop != null){
             turnController.subscribeTroop(troop);
             playerController.getPlayer(troop.getFromWhichPlayer()).payCoins(troop.getCost());
@@ -103,17 +106,45 @@ public class GameFacade {
         
     }
     public void turnPlaceTroop(int row, int column){
-        Troop troop = troopCreatorController.placeTroop(row, column, getCurrentPlayer(),getPlayerCoins(getCurrentPlayer()));
-        if(troop != null){
-            turnController.subscribeTroop(troop);
-            playerController.getPlayer(troop.getFromWhichPlayer()).payCoins(troop.getCost());
+        if(column == 0 && getCurrentPlayer() == 1 || column == 9 && getCurrentPlayer() == 2){
+            Troop troop = troopCreatorController.placeTroop(row, column, getCurrentPlayer(), getPlayerCoins(getCurrentPlayer()));
+            if(troop != null){
+                turnController.subscribeTroop(troop);
+                playerController.getPlayer(troop.getFromWhichPlayer()).payCoins(troop.getCost());
+            }
         }
     }
     
 
-    // Render 
+    // Render
 
-    public void renderBoard(SpriteBatch batch){
-        board.draw(batch);
+    public Troop getTroopFromSquare(int row, int column){
+        return board.getTroop(row, column);
     }
+
+    public Buff getBuffFromSquare(int row, int column){
+        return board.getBuff(row, column);
+    }
+
+    public boolean getFireFromSquare(int row, int column) {
+        return board.getFire(row,column);
+    }
+
+    public boolean checkEndGame(){
+        boolean isOver = false;
+        if(getCastleHealth(1) <= 0 || getCastleHealth(2) <= 0){
+            isOver = true;
+        }
+        return isOver;
+    }
+
+    public String getVencedor(){
+        if(getCastleHealth(1) < getCastleHealth(2)){
+            return getPlayerName(2);
+        } else {
+            return getPlayerName(1);
+        }
+    }
+
 }
+

@@ -1,13 +1,11 @@
 package pt.projeto.batalhadereinos.view;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
+import pt.projeto.batalhadereinos.controller.IScreenMediator;
 
 public class HowToPlayScreen extends Screen {
-    private Screen previous;
-
-    public HowToPlayScreen(BatalhaDeReinos game, Screen previous) {
-        super(game);
-        this.previous = previous;
+    public HowToPlayScreen(BatalhaDeReinos game, IScreenMediator gameScreenMediator) {
+        super(game,gameScreenMediator);
     }
 
     public void show() {
@@ -15,9 +13,9 @@ public class HowToPlayScreen extends Screen {
 
         setBackgroundImage("background/HowToPlayBackground.jpg");
 
-        createButton("buttons/btnVoltar.png", 605, 28,
+        createButton("buttons/btnVoltar.png", 605, 20,
                     new IButtonCommand() {public void execute() {
-                        screenController.update(previous);
+                        gameScreenMediator.changeScreen("Settings");
                     }});
     }
 

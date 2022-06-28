@@ -15,6 +15,7 @@ public class MapChangerController {
         if(turn % 10 == 0){
             Random random = new Random();
             int nextMap = random.nextInt(4);
+            System.out.println("Trocou: " + nextMap);
             switch (nextMap) {
                 case 1:
                     board.setMap("Mist");

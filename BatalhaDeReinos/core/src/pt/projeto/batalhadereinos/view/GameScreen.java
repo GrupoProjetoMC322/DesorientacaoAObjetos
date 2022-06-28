@@ -10,25 +10,57 @@ import pt.projeto.batalhadereinos.BatalhaDeReinos;
 import pt.projeto.batalhadereinos.controller.GameFacade;
 import pt.projeto.batalhadereinos.controller.IScreenMediator;
 import pt.projeto.batalhadereinos.model.Board;
+import pt.projeto.batalhadereinos.model.Buff;
 import pt.projeto.batalhadereinos.model.Troop;
 
 public class GameScreen extends Screen {
-    private static final int[] STANDARD_SETTINGS = {1, 0};
-    private final GameScreen gameScreen = this;
 
-    private Texture redSoldier, redArcher, redKnight, redRogue, redBarrier, redMage,
-                blueSoldier, blueArcher, blueKnight, blueRogue, blueBarrier, blueMage;
+    private GameFacade gameFacade;
+
+    PauseScreen pauseScreen;
+    EndScreen endScreen;
+
+    private Board board;
+
+    Texture mistLeftImage;
+    Texture mistRightImage;
+
     private MyLabel life1, life2, coins1, coins2, turnCounter, timer;
 
-    private int[] settings;
+    float time = 0;
 
-    public GameScreen(final BatalhaDeReinos game) {
-        this(game, STANDARD_SETTINGS);
+    public GameScreen(final BatalhaDeReinos game, GameFacade gameFacade, IScreenMediator gameScreenMediator, PauseScreen pauseScreen, EndScreen endScreen) {
+        super(game, gameScreenMediator);
+        this.gameFacade = gameFacade;
+        this.pauseScreen = pauseScreen;
+        this.endScreen = endScreen;
+
+        this.mistLeftImage = new Texture(Gdx.files.internal("icons/MistLeft.png"));
+        this.mistRightImage = new Texture(Gdx.files.internal("icons/MistRight.png"));
+
+        board = new Board();
+        gameFacade.setBoard(board);
+
+        createWidgets();
     }
-    
-    public GameScreen(final BatalhaDeReinos game, int[] settings){
-        super(game);
-        this.settings = settings;
+
+    public String formatTime() {
+        String formattedTime;
+
+        int seconds = (int) time;
+
+        int minutes = seconds/60;
+
+        int restSeconds = seconds - minutes*60;
+
+        if(restSeconds < 10){
+            formattedTime = minutes + ":0" + restSeconds;
+        } else {
+            formattedTime = minutes + ":" + restSeconds;
+        }
+        
+
+        return formattedTime;
     }
 
     public void show() {
@@ -39,37 +71,56 @@ public class GameScreen extends Screen {
             public boolean keyDown(int keyCode) {
                 switch (keyCode) {
                     case Input.Keys.NUM_1:
-                        System.out.println("Jogador 1: Soldado selecionado!");
+                        gameFacade.selectTroop("Soldier", 1);
                         break;
                     case Input.Keys.NUM_2:
-                        System.out.println("Jogador 1: Arqueiro selecionado!");
+                        gameFacade.selectTroop("Archer", 1);
                         break;
                     case Input.Keys.NUM_3:
-                        System.out.println("Jogador 1: Cavaleiro selecionado!");
+                        gameFacade.selectTroop("Knight", 1);
                         break;
                     case Input.Keys.NUM_4:
-                        System.out.println("Jogador 1: Ladino selecionado!");
+                        gameFacade.selectTroop("Rogue", 1);
                         break;
                     case Input.Keys.NUM_5:
-                        System.out.println("Jogador 1: Barreira selecionada!");
+                        gameFacade.selectTroop("Barrier", 1);
                         break;
                     case Input.Keys.NUM_6:
-                        System.out.println("Jogador 1: Mago selecionado!");
+                        gameFacade.selectTroop("Mage", 1);
                         break;
                     case Input.Keys.A:
-                        System.out.println("Jogador 1: Tropa treinada na linha 1!");
+                        if (gameFacade.getGameMode().equals("turn") && gameFacade.getTurn() % 2 == 0) {
+                            gameFacade.turnPlaceTroop(0, 0);
+                        } else {
+                            gameFacade.dynamicPlaceTroop(0, 0, 1);
+                        }
                         break;
                     case Input.Keys.B:
-                        System.out.println("Jogador 1: Tropa treinada na linha 2!");
+                        if (gameFacade.getGameMode().equals("turn") && gameFacade.getTurn() % 2 == 0) {
+                            gameFacade.turnPlaceTroop(0, 0);
+                            gameFacade.turnPlaceTroop(1, 0);
+                        } else {
+                            gameFacade.dynamicPlaceTroop(1, 0, 1);
+                        }
                         break;
                     case Input.Keys.C:
-                        System.out.println("Jogador 1: Tropa treinada na linha 3!");
+                        if (gameFacade.getGameMode().equals("turn") && gameFacade.getTurn() % 2 == 0) {
+                            gameFacade.turnPlaceTroop(2, 0);
+                        } else {
+                            gameFacade.dynamicPlaceTroop(2, 0, 1);
+                        }
                         break;
                     case Input.Keys.D:
-                        System.out.println("Jogador 1: Tropa treinada na linha 4!");
+                        if (gameFacade.getGameMode().equals("turn") && gameFacade.getTurn() % 2 == 0) {
+                            gameFacade.turnPlaceTroop(3, 0);
+                        } else {
+                            gameFacade.dynamicPlaceTroop(3, 0, 1);
+                        }
                         break;
                     case Input.Keys.P:
-                        System.out.println("Jogador 1: Turno pulado!");
+                        gameFacade.passTurn();
+                        gameFacade.tryGenerateBuff();
+                        gameFacade.tryChangeMap();
                         break;
                     case Input.Keys.ESCAPE:
                         gameScreenMediator.changeScreen("Pause");
@@ -80,23 +131,7 @@ public class GameScreen extends Screen {
         });
         Gdx.input.setInputProcessor(multiplexer);
 
-        setBackgroundImage("background/GameBackground.jpg");
-        createWidgets();       
-    }
-
-    public void generateTextures() {
-        redSoldier = new Texture(Gdx.files.internal("icons/redSoldier.png"));
-        redArcher = new Texture(Gdx.files.internal("icons/redArcher.png"));
-        redKnight = new Texture(Gdx.files.internal("icons/redKnight.png"));
-        redRogue = new Texture(Gdx.files.internal("icons/redRogue.png"));
-        redBarrier = new Texture(Gdx.files.internal("icons/redBarrier.png"));
-        redMage = new Texture(Gdx.files.internal("icons/redMage.png"));
-        blueSoldier = new Texture(Gdx.files.internal("icons/blueSoldier.png"));
-        blueArcher = new Texture(Gdx.files.internal("icons/blueArcher.png"));
-        blueKnight = new Texture(Gdx.files.internal("icons/blueKnight.png"));
-        blueRogue = new Texture(Gdx.files.internal("icons/blueRogue.png"));
-        blueBarrier = new Texture(Gdx.files.internal("icons/blueBarrier.png"));
-        blueMage = new Texture(Gdx.files.internal("icons/blueMage.png"));
+        setBackgroundImage("background/FieldGameBackground.jpg");     
     }
 
     public void createWidgets() {
@@ -107,71 +142,180 @@ public class GameScreen extends Screen {
         
         createButton("buttons/btnSoldier.png", 257, 136,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Soldado selecionado!");
+                        gameFacade.selectTroop("Soldier", 2);
                     }});
     
         createButton("buttons/btnArcher.png", 414, 136,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Arqueiro selecionado!");
+                        gameFacade.selectTroop("Archer", 2);
                     }});
 
         createButton("buttons/btnKnight.png", 571, 136,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Cavaleiro selecionado!");
+                        gameFacade.selectTroop("Knight", 2);
                     }});
 
         createButton("buttons/btnRogue.png", 728, 136,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Ladino selecionado!");
+                        gameFacade.selectTroop("Rogue", 2);
                     }});
 
         createButton("buttons/btnBarrier.png", 885, 136,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Barreira selecionada!");
+                        gameFacade.selectTroop("Barrier", 2);
                     }});
 
         createButton("buttons/btnMage.png", 1042, 136,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Mago selecionado!");
+                        gameFacade.selectTroop("Mage", 2);
                     }});
 
         createButton("buttons/btnPlot.png", 1120, 644,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Tropa treinada na linha 1!");
+                        if (gameFacade.getGameMode().equals("turn") && gameFacade.getTurn() % 2 != 0) {
+                            gameFacade.turnPlaceTroop(0, 9);
+                        } else {
+                            gameFacade.dynamicPlaceTroop(0, 9, 2);
+                        }
                     }});
 
         createButton("buttons/btnPlot.png", 1120, 544,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Tropa treinada na linha 2!");
+                        if (gameFacade.getGameMode().equals("turn") && gameFacade.getTurn() % 2 != 0) {
+                            gameFacade.turnPlaceTroop(1, 9);
+                        } else {
+                            gameFacade.dynamicPlaceTroop(1, 9, 2);
+                        }
                     }});
 
         createButton("buttons/btnPlot.png", 1120, 444,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Tropa treinada na linha 3!");
+                        if (gameFacade.getGameMode().equals("turn") && gameFacade.getTurn() % 2 != 0) {
+                            gameFacade.turnPlaceTroop(2, 9);
+                        } else {
+                            gameFacade.dynamicPlaceTroop(2, 9, 2);
+                        }
                     }});
 
         createButton("buttons/btnPlot.png", 1120, 344,
                     new IButtonCommand() {public void execute() {
-                        System.out.println("Jogador 2: Tropa treinada na linha 4!");
+                        if (gameFacade.getGameMode().equals("turn") && gameFacade.getTurn() % 2 != 0) {
+                            gameFacade.turnPlaceTroop(3, 9);
+                        } else {
+                            gameFacade.dynamicPlaceTroop(3, 9, 2);
+                        }
                     }});
 
-        if (settings[1] == 0) {
+        if (gameFacade.getGameMode().equals("turn")) {
             createButton("buttons/btnSkip.png", 1213, 168,
                         new IButtonCommand() {public void execute() {
-                            System.out.println("Jogador 2: Turno pulado!");
+                            gameFacade.passTurn();
+                            gameFacade.tryGenerateBuff();
+                            gameFacade.tryChangeMap();
                         }});
-            turnCounter = addLabel("Turno 1", MyLabel.BLACK, 214, 745, 42);
+            turnCounter = createLabel("Turno 1", MyLabel.BLACK, 214, 745, 42);
         }
         
-        timer = addLabel("00:01", MyLabel.BLACK, 1111, 745, 42);
-        life1 = addLabel("30/30", MyLabel.BLACK, 53, 398, 34);
-        life2 = addLabel("30/30", MyLabel.BLACK, 1272, 398, 34);
-        coins1 = addLabel("5", MyLabel.YELLOW, 115, 344, 34);
-        coins2 = addLabel("5", MyLabel.YELLOW, 1338, 344, 34);
+        timer = createLabel("00:01", MyLabel.BLACK, 1111, 745, 42);
+        life1 = createLabel("30/30", MyLabel.BLACK, 53, 398, 34);
+        life2 = createLabel("30/30", MyLabel.BLACK, 1272, 398, 34);
+        coins1 = createLabel("5", MyLabel.YELLOW, 115, 344, 34);
+        coins2 = createLabel("5", MyLabel.YELLOW, 1338, 344, 34);
     }
 
-	public void render(float delta){
+    public void drawBoardFromModel() {
+        for(int i = 0; i<4;i++){
+            for(int j = 0;j<10;j++){
+                Troop troop = gameFacade.getTroopFromSquare(i,j);
+                Buff buff = gameFacade.getBuffFromSquare(i,j);
+                boolean fire = gameFacade.getFireFromSquare(i,j);
+
+                int graphicRowTroop = j*100+220;
+                int graphicColumnTroop = 644-i*100;
+
+                int graphicRowBuff = j*100+234;
+                int graphicColumnBuff= 658-i*100;
+
+                if(fire){
+                    Texture fireRectangle = new Texture(Gdx.files.internal("icons/FireRectangle.png"));
+                    batch.draw(fireRectangle, graphicRowTroop, graphicColumnTroop);
+                }
+
+                if(troop != null){
+                    if(!troop.getBuff().equals("None")){
+            
+                        switch (troop.getBuff()){
+                            case "Health":
+                                batch.setColor(1f,0f,0f,1f);
+                                break;
+                            case "Attack":
+                                batch.setColor(0f,0f,1f,1f);
+                                break;
+                            case "Mixed":
+                                batch.setColor(1f,0f,1f,1f);
+                                break;
+                            default:
+                                break;     
+                        }
+
+                        batch.draw(troop.getGraphic(), graphicRowTroop, graphicColumnTroop);
+
+                        batch.setColor(1,1,1,1);
+            
+                    } else {
+                        batch.draw(troop.getGraphic(), graphicRowTroop, graphicColumnTroop);
+                    }
+                }
+
+                if(buff != null){
+                    batch.draw(buff.getGraphic(), graphicRowBuff, graphicColumnBuff);
+                }
+                
+            }
+        }
+    }
+
+ 	public void render(float delta){
         super.render(delta);
+
+        time += Gdx.graphics.getDeltaTime();
+        timer.update(formatTime());
+
+        this.setBackgroundImage("background/" + gameFacade.getMap() + "GameBackground.jpg");
+        pauseScreen.setBackgroundImage("background/" + gameFacade.getMap() + "PauseBackground.jpg");
+
+        if (gameFacade.getGameMode().equals("turn"))
+            turnCounter.update("Turno: " + gameFacade.getTurn());
+        else {
+            int turn = gameFacade.getTurn();
+
+            gameFacade.passTurn();
+
+            if (gameFacade.getTurn() != turn) {
+                gameFacade.tryGenerateBuff();
+                gameFacade.tryChangeMap();
+            }
+
+        }
+
+        life1.update(gameFacade.getCastleHealth(1) + "/30");
+        coins1.update(gameFacade.getPlayerCoins(1));
+        life2.update(gameFacade.getCastleHealth(2) + "/30");
+        coins2.update(gameFacade.getPlayerCoins(2));
+
+        batch.begin();
+        drawBoardFromModel();
+        if(gameFacade.getMap().equals("Mist")){
+            batch.draw(mistLeftImage,284,330);
+            batch.draw(mistRightImage,795,327);
+        }
+        batch.end();
+
+        if (gameFacade.checkEndGame()) {
+            endScreen.setTempoDeJogo(formatTime());
+            endScreen.setVencedor(gameFacade.getVencedor());
+            gameScreenMediator.changeScreen("EndScreen");
+        }
     }
 
 }

@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
-import pt.projeto.batalhadereinos.controller.GameScreenMediator;
 import pt.projeto.batalhadereinos.controller.IScreenMediator;
 
 public abstract class Screen extends ScreenAdapter {
@@ -30,9 +29,9 @@ public abstract class Screen extends ScreenAdapter {
     protected Texture bgImg;
     protected ArrayList<MyButton> buttons;
 
-    public Screen(BatalhaDeReinos game) {
+    public Screen(BatalhaDeReinos game, IScreenMediator gameScreenMediator) {
         this.game = game;
-        gameScreenMediator = new GameScreenMediator(game);
+        this.gameScreenMediator = gameScreenMediator;
         batch = new SpriteBatch();
         font = new BitmapFont();
         stage = new Stage();
@@ -90,7 +89,7 @@ public abstract class Screen extends ScreenAdapter {
         return newButton;
     }
 
-    public MyLabel addLabel(CharSequence text, Color color, float x, float y, int size) {
+    public MyLabel createLabel(CharSequence text, Color color, float x, float y, int size) {
         LabelStyle labelStyle = MyLabel.generateStyle(size, color);
         MyLabel newLabel = new MyLabel(text, labelStyle, x, y);
         stage.addActor(newLabel);

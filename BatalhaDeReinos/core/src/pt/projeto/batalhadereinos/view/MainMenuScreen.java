@@ -3,15 +3,11 @@ package pt.projeto.batalhadereinos.view;
 import com.badlogic.gdx.Gdx;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
-import pt.projeto.batalhadereinos.controller.GameScreenMediator;
+import pt.projeto.batalhadereinos.controller.IScreenMediator;
 
-public class MainMenuScreen extends Screen {
-
-	GameScreenMediator gameScreenMediator;
-
-	public MainMenuScreen(final BatalhaDeReinos game) {
-		super(game);
-		this.gameScreenMediator = new GameScreenMediator(game);
+public class MainMenuScreen extends Screen{
+	public MainMenuScreen(final BatalhaDeReinos game, IScreenMediator gameScreenMediator) {
+		super(game,gameScreenMediator);
 	}
 
 	public void show() {
@@ -20,16 +16,13 @@ public class MainMenuScreen extends Screen {
 		setBackgroundImage("background/TitleBackground.jpg");
 
 
-		createButton("buttons/btnJogar.png", 141, 615,
+		createButton("buttons/btnJogar.png", 141, 563,
 					new IButtonCommand() {public void execute() {gameScreenMediator.changeScreen("Settings");}});
 
-		/*createButton("buttons/btnOpcoes.png", 141, 449,
-					new IButtonCommand() {public void execute() {screenController.update(new SettingsScreen(game));}});*/
-
-		createButton("buttons/btnCreditos.png", 141, 283,
+		createButton("buttons/btnCreditos.png", 141, 385,
 					new IButtonCommand() {public void execute() {gameScreenMediator.changeScreen("Credit");}});
 
-		createButton("buttons/btnSair.png", 141, 117,
+		createButton("buttons/btnSair.png", 141, 207,
 					new IButtonCommand() {public void execute() {Gdx.app.exit();}});
 	}
 }

@@ -38,7 +38,7 @@ public class TroopCreatorController {
     }
 
     public Troop placeTroop(int row, int column,int currentPlayer, int currentPlayerCoins){
-        Troop troop;
+        Troop troop = null;
         String selectedTroop;
 
         if(currentPlayer == 1){
@@ -57,11 +57,11 @@ public class TroopCreatorController {
             troop = new Knight(board,selectedTroop,row,column,currentPlayer);
         } else if(selectedTroop.equals("Archer")){
             troop = new Archer(board,selectedTroop,row,column,currentPlayer);
-        }else{
+        }else if(selectedTroop.equals("Soldier")){
             troop = new Soldier(board,selectedTroop,row,column,currentPlayer);
         }
         
-        if(currentPlayerCoins < troop.getCost() || board.getTroop(row, column) != null){
+        if((troop != null) && (currentPlayerCoins < troop.getCost() || board.getTroop(row, column) != null)){
             troop = null;
         } else {
             board.addTroop(troop, row, column);

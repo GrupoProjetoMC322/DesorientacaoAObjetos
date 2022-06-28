@@ -9,8 +9,9 @@ public class BatalhaDeReinos extends Game {
 	public IScreenMediator gameScreenMediator;
 
 	public void create() {
-		gameScreenMediator = new GameScreenMediator(this);
+		this.gameScreenMediator = new GameScreenMediator(this);
 		gameScreenMediator.changeScreen("MainMenu");
+
 	}
 
 	public void render() {

@@ -78,7 +78,7 @@ public abstract class TurnController {
     }
 
     public void givePlayerCoins(int numberOfPlayer,int numberOfCoins){
-        if(numberOfPlayer == 1){
+        if(numberOfPlayer == 0){
             playersOnGame[0].gainCoins(numberOfCoins);
         } else {
             playersOnGame[1].gainCoins(numberOfCoins);
