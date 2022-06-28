@@ -30,7 +30,7 @@ public class Player implements IPlayerObserver{
             this.coins = 20;
         }
     }
-
+    
     public void payCoins(int number){
         this.coins -= number;
     }

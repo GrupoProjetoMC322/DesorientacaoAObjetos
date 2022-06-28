@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Rogue extends Troop{
     public Rogue(Board board, String graphicAdress, int row, int column, int fromWhichPlayer){
-        super(board, graphicAdress, row, column, 6, 3, 3, 1, 1, "Rogue", fromWhichPlayer);
+        super(board, graphicAdress, row, column, 2, 3, 3, 1, 1, "Rogue", fromWhichPlayer);
     }
 
     public void verifyMap(){
@@ -33,12 +33,33 @@ public class Rogue extends Troop{
 
     public boolean move(){
 
+        verifyMap();
+
         boolean attacking = false;
         ArrayList<Troop> enemyTroopsFound = new ArrayList<>();
 
         // Verify before movement
         enemyTroopsFound = verifyRange();
         if(!enemyTroopsFound.isEmpty()){
+            if(this.fromWhichPlayer == 1){
+                if(this.column+2 <= 8 && board.getTroop(this.row, this.column+2) == null){
+                    board.removeTroop(this.row, this.column);
+                    this.column+=2;
+                    verifyBuff();
+                    verifyFire();
+                    board.addTroop(this, this.row, this.column);
+                }
+            } else {
+                if(this.column-2 >= 1 && board.getTroop(this.row, this.column-2) == null){
+                    board.removeTroop(this.row, this.column);
+                    this.column-=2;
+                    verifyBuff();
+                    verifyFire();
+                    board.addTroop(this, this.row, this.column);
+                }
+            }
+            
+            enemyTroopsFound = verifyRange();
             attacking = true;
         }
 
@@ -51,6 +72,8 @@ public class Rogue extends Troop{
                 if(this.column+1 >= 0 && this.column+1<= 8){
                     board.removeTroop(this.row, this.column);
                     this.column++;
+                    verifyBuff();
+                    verifyFire();
                     board.addTroop(this, this.row, this.column);
                 } else{
                     attacking = true;
@@ -59,6 +82,8 @@ public class Rogue extends Troop{
                 if(this.column-1 >= 1 && this.column-1<= 9){
                     board.removeTroop(this.row, this.column);
                     this.column--;
+                    verifyBuff();
+                    verifyFire();
                     board.addTroop(this, this.row, this.column);
                 } else{
                     attacking = true;
@@ -72,12 +97,16 @@ public class Rogue extends Troop{
                     if(this.column+2 <= 8 && board.getTroop(this.row, this.column+2) == null){
                         board.removeTroop(this.row, this.column);
                         this.column+=2;
+                        verifyBuff();
+                        verifyFire();
                         board.addTroop(this, this.row, this.column);
                     }
                 } else {
                     if(this.column-2 >= 1 && board.getTroop(this.row, this.column-2) == null){
                         board.removeTroop(this.row, this.column);
                         this.column-=2;
+                        verifyBuff();
+                        verifyFire();
                         board.addTroop(this, this.row, this.column);
                     }
                 }

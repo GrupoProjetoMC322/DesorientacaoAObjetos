@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public abstract class Troop implements ITroopObserver, IDrawable{
+public abstract class Troop implements ITroopObserver{
     protected Board board;
 
     protected Texture graphic;
@@ -32,7 +32,7 @@ public abstract class Troop implements ITroopObserver, IDrawable{
     public Troop(Board board, String graphicAdress, int row, int column, int health, int attack,
     int cost, int range, int speed, String type, int fromWhichPlayer) {
 		this.board = board;
-        this.graphic = new Texture(Gdx.files.internal(graphicAdress + (fromWhichPlayer == 1 ? "Red":"Blue") +".png"));
+        this.graphic = new Texture(Gdx.files.internal("icons/" + (fromWhichPlayer == 1 ? "red":"blue") + graphicAdress + ".png"));
 		this.row = row;
 		this.column = column;
         this.health = health;
@@ -64,6 +64,12 @@ public abstract class Troop implements ITroopObserver, IDrawable{
     }
     public String getType(){
         return this.type;
+    }
+    public String getBuff(){
+        return this.buff;
+    }
+    public Texture getGraphic(){
+        return this.graphic;
     }
 
     public boolean isAlive(){
@@ -112,6 +118,13 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         return enemyTroopInRange;
     }
 
+
+    public void verifyFire(){
+        if(board.getFire(this.row, this.column)){
+            this.health -= 1;
+        }
+    }
+
     public void verifyBuff(){
         if(board.getBuff(this.row, this.column) != null){
             if(this.buff == "None"){
@@ -142,6 +155,8 @@ public abstract class Troop implements ITroopObserver, IDrawable{
 
     public boolean move(){
 
+        verifyMap();
+
         boolean attacking = false;
         ArrayList<Troop> enemyTroopsFound = new ArrayList<>();
 
@@ -161,6 +176,7 @@ public abstract class Troop implements ITroopObserver, IDrawable{
                     board.removeTroop(this.row, this.column);
                     this.column++;
                     verifyBuff();
+                    verifyFire();
                     board.addTroop(this, this.row, this.column);
                 } else{
                     attacking = true;
@@ -170,6 +186,7 @@ public abstract class Troop implements ITroopObserver, IDrawable{
                     board.removeTroop(this.row, this.column);
                     this.column--;
                     verifyBuff();
+                    verifyFire();
                     board.addTroop(this, this.row, this.column);
                 } else{
                     attacking = true;
@@ -221,39 +238,4 @@ public abstract class Troop implements ITroopObserver, IDrawable{
         }
     }
 
-    
-
-    public void draw(SpriteBatch batch){
-        
-        int graphicRow = column*100+220;
-        int graphicColumn = +644-row*100;
-
-        if(!buff.equals("None")){
-            textureRegion = new TextureRegion(graphic);
-            sprite = new Sprite(textureRegion);
-
-            switch (this.buff) {
-                case "Health":
-                    batch.setColor(1f,0f,0f,1f);
-                    break;
-                case "Attack":
-                    batch.setColor(0f,0f,1f,1f);
-                    break;
-                case "Mixed":
-                    batch.setColor(1f,0f,1f,1f);
-                    break;
-                default:
-                    break;     
-            }
-
-            batch.draw(graphic, graphicRow, graphicColumn);
-
-            batch.setColor(1,1,1,1);
-
-        } else{
-            batch.draw(graphic, graphicRow, graphicColumn);
-        }
-        
-    }
-    
 }

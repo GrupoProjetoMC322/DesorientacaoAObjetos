@@ -1,11 +1,6 @@
 package pt.projeto.batalhadereinos.model;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-public class Square implements IDrawable{
-    private Texture graphic;
+public class Square{
     private int row;
     private int column;
     private Troop troop;
@@ -13,14 +8,12 @@ public class Square implements IDrawable{
     private boolean fire;
 
     public Square(String graphicAdress,int row, int column){
-        this.graphic = new Texture(Gdx.files.internal(graphicAdress+".png"));
         this.row = row;
         this.column = column;
         this.troop = null;
         this.buff = null;
         this.fire = false;
     }
-
     
     public void setTroop(Troop troop){
         this.troop = troop;
@@ -46,24 +39,14 @@ public class Square implements IDrawable{
         this.buff = null;
     }
     
+    public void setFire(boolean isOnFire){
+        this.fire = isOnFire;
+        if(isOnFire){
+            this.buff = null;
+        }   
+    }
 
-    public void draw(SpriteBatch batch){
-        int graphicRow = column*100+220;
-        int graphicColumn = 644-row*100;
-
-        if(this.fire == true){
-            this.graphic = new Texture(Gdx.files.internal("FireRectangle.png"));
-        }
-
-        batch.draw(graphic, graphicRow, graphicColumn);
-
-        
-
-        if(this.buff != null){
-            buff.draw(batch);
-        }
-        if(this.troop != null){
-            troop.draw(batch);
-        }
+    public boolean getFire(){
+        return this.fire;
     }
 }

@@ -28,7 +28,7 @@ public class InsaneTimeTurnController extends TurnController implements ITurnCon
 
     public void notifyPlayers(){
         int coinsEarnedPerTurn = 2*((turn / 5) + 1);
+        givePlayerCoins(0, coinsEarnedPerTurn);
         givePlayerCoins(1, coinsEarnedPerTurn);
-        givePlayerCoins(2, coinsEarnedPerTurn);
     }
 }

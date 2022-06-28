@@ -1,8 +1,8 @@
 package pt.projeto.batalhadereinos.model;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.Random;
 
-public class Board implements IDrawable{
+public class Board{
     private Square[][] boardPositions;
 
     private Castle player1Castle;
@@ -29,7 +29,7 @@ public class Board implements IDrawable{
 
     public Troop getTroop(int row, int column) {
       Troop troop = null;
-      if(row >= 0 && row <= 4 && column >= 0 && column <= 9){
+      if(row >= 0 && row <= 3 && column >= 0 && column <= 9){
         troop = boardPositions[row][column].getTroop();
       }
       return troop;
@@ -62,16 +62,38 @@ public class Board implements IDrawable{
     public String getMap(){
       return this.map;
     }
-    public void setMap(String map){
-      this.map = map;
+
+    public void setFires(){
+      Random random = new Random();
+      for(int i = 0; i<5;i++){
+        int fireRow = random.nextInt(4);
+        int fireColumn = random.nextInt(8) + 1;
+        boardPositions[fireRow][fireColumn].setFire(true);
+      }
     }
 
-
-    public void draw(SpriteBatch batch) {
-      for(Square[] boardRow : boardPositions){
-        for(Square s : boardRow){
-          s.draw(batch);
+    public void removeFires(){
+      for(int i = 0;i<4;i++){
+        for(int j = 0;j<10;j++){
+          boardPositions[i][j].setFire(false);
         }
       }
+    }
+
+    public boolean getFires(int row, int column){
+      return boardPositions[row][column].getFire();
+    }
+
+    public void setMap(String map){
+      this.map = map;
+      if(this.map.equals("Volcano")){
+        setFires();
+      } else {
+        removeFires();
+      }
+    }
+
+    public boolean getFire(int row, int column) {
+      return boardPositions[row][column].getFire();
     }
 }

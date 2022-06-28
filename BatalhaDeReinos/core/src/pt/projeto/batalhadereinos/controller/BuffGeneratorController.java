@@ -30,12 +30,12 @@ public class BuffGeneratorController {
     }
 
     public void tryGenerateBuff(int turn){
-        if(turn % 5 == 0){
+        if(turn % 7 == 0){
             Random random = new Random();
             for(int i = 0; i<3; i++){
                 int row = random.nextInt(4);
                 int column = random.nextInt(2) + 4;
-                if(board.getTroop(row, column) == null && board.getBuff(row, column) == null){
+                if(board.getTroop(row, column) == null && board.getBuff(row, column) == null && !board.getFire(row, column)){
                     Buff buff = randomBuff(row,column);
                     board.addBuff(buff, row, column);
                     break;

@@ -14,11 +14,15 @@ public class Buff implements IDrawable{
         this.row = row;
         this.column = column;
         this.type = type;
-        this.graphic = new Texture(Gdx.files.internal(type + ".png"));
+        this.graphic = new Texture(Gdx.files.internal("icons/"+ type + ".png"));
     }
 
     public String getType(){
         return this.type;
+    }
+
+    public Texture getGraphic(){
+        return this.graphic;
     }
 
     public void draw(SpriteBatch batch){
