@@ -83,6 +83,5 @@ public abstract class TurnController {
         } else {
             playersOnGame[1].gainCoins(numberOfCoins);
         }
-        
     }
 }

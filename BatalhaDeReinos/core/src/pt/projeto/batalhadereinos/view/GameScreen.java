@@ -7,7 +7,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 
 import pt.projeto.batalhadereinos.BatalhaDeReinos;
-import pt.projeto.batalhadereinos.controller.GameFacade;
+import pt.projeto.batalhadereinos.controller.IGameFacade;
 import pt.projeto.batalhadereinos.controller.IScreenMediator;
 import pt.projeto.batalhadereinos.model.Board;
 import pt.projeto.batalhadereinos.model.Buff;
@@ -15,7 +15,7 @@ import pt.projeto.batalhadereinos.model.Troop;
 
 public class GameScreen extends Screen {
 
-    private GameFacade gameFacade;
+    private IGameFacade gameFacade;
 
     private PauseScreen pauseScreen;
     private EndScreen endScreen;
@@ -42,7 +42,7 @@ public class GameScreen extends Screen {
 
     float time = 0;
 
-    public GameScreen(final BatalhaDeReinos game, GameFacade gameFacade, IScreenMediator gameScreenMediator, PauseScreen pauseScreen, EndScreen endScreen) {
+    public GameScreen(final BatalhaDeReinos game, IGameFacade gameFacade, IScreenMediator gameScreenMediator, PauseScreen pauseScreen, EndScreen endScreen) {
         super(game, gameScreenMediator);
         this.gameFacade = gameFacade;
         this.pauseScreen = pauseScreen;

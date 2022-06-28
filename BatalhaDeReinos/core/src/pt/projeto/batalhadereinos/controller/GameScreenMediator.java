@@ -29,7 +29,9 @@ public class GameScreenMediator implements IScreenMediator{
     }
 
     public void changeScreen(String screen){
-        GameFacade gameFacade;
+
+        IGameFacade gameFacade;
+
         switch(screen){
             case "MainMenu":
                 game.setScreen(mainMenuScreen);

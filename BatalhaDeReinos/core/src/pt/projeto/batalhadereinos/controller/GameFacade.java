@@ -4,7 +4,7 @@ import pt.projeto.batalhadereinos.model.Board;
 import pt.projeto.batalhadereinos.model.Buff;
 import pt.projeto.batalhadereinos.model.Troop;
 
-public class GameFacade {
+public class GameFacade implements IGameFacade{
     private ITurnControllerSubject turnController;
     private TroopCreatorController troopCreatorController;
     private PlayerController playerController;
