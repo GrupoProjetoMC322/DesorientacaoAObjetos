@@ -18,7 +18,9 @@ Batalha de Reinos é um jogo de estratégia com temática de fantasia medieval. 
 [Slides da Prévia do Projeto](assets/presentation/ApresentaçãoPrévia.pdf)
 
 ## Slides da Apresentação Final
-[Slides da Apresentação Final](assets/presentation/Apresenta%C3%A7%C3%A3oFinal.pptx)
+[Link para os slides neste repositório](assets/presentation/Apresenta%C3%A7%C3%A3oFinal.pptx)
+
+[Link para os slides no Google Drive](https://docs.google.com/presentation/d/12dw41wW9iifDjXrGjq0QPl-0DfrLvtsd8uU71CKP-AE/edit?usp=sharing)
 
 # Diagramas
 

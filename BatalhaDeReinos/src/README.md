@@ -10,4 +10,4 @@ Para executá-lo, execute `./gradlew desktop:run` no diretório 'BatalhaDeReinos
 
 Para instalar o jogo, efetue [download](https://drive.google.com/file/d/1eo8QWTW9PkHHHEahToCbaQsBAw5LndnB/view?ts=62ba7d62) do arquivo .jar.
 
-Para executá-lo pelo terminal, execute o comando `java -jar caminho/para/seu/arqquivo/BatalhaDeReinos.jar`. Caso deseje executá-lo por meio de uma interface gráfica (explorador de arquivos), abra-o com duplo clique sobre o arquivo (verifique se ele tem permissão de executar como programa).
+Para executá-lo pelo terminal, execute o comando `java -jar caminho/para/seu/arquivo/BatalhaDeReinos.jar`. Caso deseje executá-lo por meio de uma interface gráfica (explorador de arquivos), abra-o com duplo clique sobre o arquivo (verifique se ele tem permissão de executar como programa).
